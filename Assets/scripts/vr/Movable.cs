@@ -36,7 +36,7 @@ public class Movable : MonoBehaviour {
         offsetPosition = Vector3.zero;
     }
 
-    public virtual void Movement(Object controller) {}
+    public virtual void Movement(Object controller) { }
     public virtual void enterInput() { }
     public virtual void triggerClicked() { }
     public virtual void PadClicked() { }
