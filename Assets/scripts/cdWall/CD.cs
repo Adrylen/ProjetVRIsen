@@ -6,7 +6,12 @@ public class CD : Movable
 {
     private Transform origin;
     private bool placed = false;
-	public string fileName;
+
+    public GameObject parent;
+    public Vector3 origin_position;
+    public Vector3 origin_scale;
+    public string fileName;
+
 
 	void Start() {
         origin = gameObject.transform;
@@ -31,9 +36,12 @@ public class CD : Movable
     public override void Movement(GameObject controller)
     {
         if(placed) {
-            transform.parent = null;
-            transform.SetPositionAndRotation(origin.position, origin.rotation);
-            transform.localScale = origin.localScale;
+            transform.parent = parent.transform;
+            transform.localPosition = origin_position;
+            transform.localRotation = Quaternion.identity;
+            transform.localScale = origin_scale;
+            //transform.SetPositionAndRotation(origin.position, origin.rotation);
+            //transform.localScale = origin.localScale;
             placed = false;
             Detach();
         } else {
