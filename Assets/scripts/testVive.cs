@@ -20,6 +20,7 @@ public class testVive : MonoBehaviour {
 				text.text = device.GetAxis ().x + " " + device.GetAxis ().y;
 			}
 		}catch(Exception e){
+			Debug.Log (e.StackTrace);
 			text.text = "vive not detected";
 		}
 	}

@@ -6,21 +6,12 @@ public class ObjectInteraction : MonoBehaviour
 {
 	private SteamVR_TrackedController controller;
 	private GameObject target = null;
-	private Vector3 base_offset;
-	private Vector3 offset_position;
-    private bool isClicked =false;
-    private bool isPadClicked = false;
+    private bool isClicked = false;
     public int pulsation = 900;
 
     
 	void OnEnable() {
 		controller = GetComponent<SteamVR_TrackedController>();
-        
-	}
-
-	void Start() {
-		base_offset = new Vector3(-9999, -9999, -9999);
-        offset_position = base_offset;
 	}
 
 	void Update() {
@@ -30,19 +21,13 @@ public class ObjectInteraction : MonoBehaviour
 			if(target != null) {
                 // Is movable
                 if(target.GetComponent<Movable>() != null) {
-                    if(offset_position == base_offset) {
-                        offset_position = target.transform.position - transform.position;
-                    }
-                    if (isClicked == false)
-                    {
+                    if (!isClicked) {
                         target.GetComponent<Movable>().triggerClicked();
                         isClicked = true;
                     }
                     target.GetComponent<Movable>().Movement(gameObject);
                 }
-            } else {
-				offset_position = base_offset;
-			}
+            }
 		} else {
             isClicked = false;
             if(target != null) {

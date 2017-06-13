@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MovableButton : Movable {
-	public bool active;
+	public Material active;
+	public Material inactive;
+	public bool isActive;
 
 	private Vector3 origin;
 	private bool outFlag;
@@ -11,13 +13,12 @@ public class MovableButton : Movable {
 
 	// Use this for initialization
 	void Start () {
-		active = false;
+		GetComponent<Renderer>().sharedMaterial = inactive;
+
+		isActive = false;
 		outFlag = true;
         base_scale_y = transform.localScale.y;
 		origin = transform.localPosition;
-	}
-
-	public override void enterInput(){
 	}
 
 	public override void leaveInput(){
@@ -27,15 +28,17 @@ public class MovableButton : Movable {
 	public override void Movement(GameObject controller) {
 		if (outFlag) {
             outFlag = false;
-			active = !active;
+			isActive = !isActive;
 		}
 
-		if (active) {
+		if (isActive) {
             transform.localScale = new Vector3(transform.localScale.x, base_scale_y * 0.8f, transform.localScale.z);
+			GetComponent<Renderer>().sharedMaterial = active;
 		} else {
             transform.localScale = new Vector3(transform.localScale.x, base_scale_y, transform.localScale.z);
+			GetComponent<Renderer>().sharedMaterial = inactive;
 		}
-		GetComponent<Actions> ().LaunchAction (active);
+		GetComponent<Actions> ().LaunchAction (isActive);
 
         transform.localPosition = origin;
     }

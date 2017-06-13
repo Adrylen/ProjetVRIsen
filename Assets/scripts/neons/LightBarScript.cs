@@ -14,8 +14,6 @@ public class LightBarScript : MonoBehaviour {
     float k=0, l=0, m=0;
     System.Random rnd5 = new System.Random();
     System.Random rnd = new System.Random();
-    System.Random rnd2 = new System.Random();
-    System.Random rnd3 = new System.Random();
     public int numberOfFrequencies;
     public int numberOfDecomposition;
     private float[] spectrumDecomposition;
@@ -219,8 +217,9 @@ public class LightBarScript : MonoBehaviour {
 
 		particle.update ();
 		try{
-		changePixelColor (aPanel [particle.getY (), particle.getX ()], new Color(1,1,1));
+			changePixelColor (aPanel [particle.getY (), particle.getX ()], new Color(1,1,1));
 		}catch(Exception e){
+			Debug.Log (e.StackTrace);
 		}
 
 //		for (int i = 0; i < maxX; i++) {
