@@ -17,6 +17,10 @@ public class CD : Movable
         Debug.Log("Position : " + origin.position.x + "/" + origin.position.y + "/" + origin.position.z);
     }
 
+	public bool IsPlaced(){
+		return placed;
+	}
+
     public void SetPlaced(bool placed)
     {
         this.placed = placed;
