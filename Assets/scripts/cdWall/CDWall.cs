@@ -43,6 +43,7 @@ public class CDWall : MonoBehaviour {
         StringTransform test;
         Vector3 position;
         int xPos=0, yPos=0;
+        
 
         for (int i = 0; i< LoadResources.fileNames.Length; i++)
         {
@@ -50,12 +51,12 @@ public class CDWall : MonoBehaviour {
             yPos = i % 14;
             position = new Vector3((float)xPos * 1.1F,(float)yPos*1.1F, 0);
             temp = (GameObject)Instantiate(templateCube, position, Quaternion.identity,parentCube.transform);
-
 			temp.GetComponentInChildren<TextMesh>().text = LoadResources.fileNames[i];
-
             tempColor=temp.GetComponent<Renderer>();
 			tempArray = StringTransform.TransformColor(LoadResources.fileNames[i]);
             tempColor.material.SetColor("_Color", new Color((float)tempArray[0]/255, (float)tempArray[1]/255, (float)tempArray[2]/255));
+            temp.GetComponent<StockSound>().filename = LoadResources.fileNames[i];
+            temp.GetComponent<StockSound>().boxMaterial = tempColor;
         }
 
         parentCube.transform.parent = gameObject.transform;
