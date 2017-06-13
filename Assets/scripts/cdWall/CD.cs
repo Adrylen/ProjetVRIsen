@@ -12,25 +12,32 @@ public class CD : Movable
     public Vector3 origin_scale;
     public string fileName;
 
-
 	void Start() {
         origin = gameObject.transform;
         Debug.Log("Position : " + origin.position.x + "/" + origin.position.y + "/" + origin.position.z);
     }
 
-    public Transform GetOrigin()
-    {
-        return origin;
-    }
-
-    public bool IsPlaced()
-    {
-        return placed;
-    }
-
     public void SetPlaced(bool placed)
     {
         this.placed = placed;
+    }
+
+    public CD SetParent(GameObject parent) {
+        return this;
+    }
+
+    public CD SetFileName(string fileName) {
+        return this;
+    }
+
+    public CD SetPosition(Vector3 position)
+    {
+        return this;
+    }
+
+    public CD SetRotation(Quaternion rotation)
+    {
+        return this;
     }
 
     public override void Movement(GameObject controller)
@@ -40,22 +47,10 @@ public class CD : Movable
             transform.localPosition = origin_position;
             transform.localRotation = Quaternion.identity;
             transform.localScale = origin_scale;
-            //transform.SetPositionAndRotation(origin.position, origin.rotation);
-            //transform.localScale = origin.localScale;
             placed = false;
             Detach();
         } else {
             base.Movement(controller);
         }
     }
-
-    //public override void triggerClicked()
-    //{
-    //    if(placed == true) {
-    //        gameObject.transform.position = origin.position;
-    //        gameObject.transform.rotation = origin.rotation;
-    //        //placed = false;
-    //        Detach();
-    //    }
-    //}
 }
