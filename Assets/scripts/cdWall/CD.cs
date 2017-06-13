@@ -30,19 +30,14 @@ public class CD : Movable
 
     public override void Movement(GameObject controller)
     {
-        base.Movement(controller);
-        if(placed)
-        {
-            Debug.Log("Position : " + origin.position.x + "/" + origin.position.y + "/" + origin.position.z);
+        if(placed) {
             transform.parent = null;
             transform.SetPositionAndRotation(origin.position, origin.rotation);
-            //transform.position = origin.position;
-            //transform.rotation = origin.rotation;
-            //transform.localPosition = origin.localPosition;
-            //transform.localRotation = origin.localRotation;
             transform.localScale = origin.localScale;
             placed = false;
             Detach();
+        } else {
+            base.Movement(controller);
         }
     }
 

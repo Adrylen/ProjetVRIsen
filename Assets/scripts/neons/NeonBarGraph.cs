@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class NeonBarGraph : MonoBehaviour {
-
-    private int[,] NeonMat = new int[32, 192];
     GameObject neonScene;
     private Renderer[] LightBar;
-
 
     void Start()
     {
@@ -27,9 +24,4 @@ public class NeonBarGraph : MonoBehaviour {
         }
        
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 }

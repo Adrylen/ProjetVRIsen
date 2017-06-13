@@ -5,11 +5,12 @@ using UnityEngine;
 public class GrabObjectOnCollision : MonoBehaviour
 {
     public float force;
-    GameObject cameraMovable;
+    //GameObject cameraMovable;
     FixedJoint joint;
+
     void Start()
     {
-        cameraMovable = GameObject.FindGameObjectWithTag("MainCamera");
+        //cameraMovable = GameObject.FindGameObjectWithTag("MainCamera");
     }
     
     void OnTriggerEnter(Collider col)

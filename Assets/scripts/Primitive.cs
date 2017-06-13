@@ -6,18 +6,10 @@ public class Primitive : MonoBehaviour
 {
     private SteamVR_TrackedController controller;
     private GameObject target = null;
-    private Vector3 base_offset;
-    private Vector3 offset_position;
-    private Quaternion offset_rotation;
 
     void OnEnable()
     {
         controller = GetComponent<SteamVR_TrackedController>();
-    }
-
-    void Start()
-    {
-        base_offset = new Vector3(-9999, -9999, -9999);
     }
 
     void Update()
@@ -39,9 +31,6 @@ public class Primitive : MonoBehaviour
 
 				
                 target.transform.rotation = transform.rotation;// * offset_rotation;
-            } else {
-                offset_position = base_offset;
-                offset_rotation.eulerAngles = base_offset;
             }
         }
     }
