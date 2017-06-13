@@ -3,10 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayAudio : Actions {
+    public bool launched = false;
+
 	public override void LaunchAction (bool isActive)
 	{
 		if (isActive) {
-            audioSource.Play();
+            if(launched) {
+                audioSource.UnPause();
+            } else {
+                audioSource.Play();
+                launched = true;
+            }
 		} else {
 			audioSource.Pause ();
 		}

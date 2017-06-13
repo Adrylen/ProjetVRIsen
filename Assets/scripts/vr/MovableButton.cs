@@ -21,6 +21,13 @@ public class MovableButton : Movable {
 		origin = transform.localPosition;
 	}
 
+    public void Reset()
+    {
+        isActive = false;
+        transform.localScale = new Vector3(transform.localScale.x, base_scale_y, transform.localScale.z);
+        GetComponent<Renderer>().sharedMaterial = inactive;
+    }
+
 	public override void leaveInput(){
 		outFlag = true;
 	}
@@ -34,10 +41,8 @@ public class MovableButton : Movable {
 		if (isActive) {
             transform.localScale = new Vector3(transform.localScale.x, base_scale_y * 0.8f, transform.localScale.z);
 			GetComponent<Renderer>().sharedMaterial = active;
-		} else {
-            transform.localScale = new Vector3(transform.localScale.x, base_scale_y, transform.localScale.z);
-			GetComponent<Renderer>().sharedMaterial = inactive;
-		}
+		} else { Reset(); }
+
 		GetComponent<Actions> ().LaunchAction (isActive);
 
         transform.localPosition = origin;

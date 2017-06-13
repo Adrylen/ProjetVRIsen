@@ -5,14 +5,23 @@ using UnityEngine;
 public class CDCharger : MonoBehaviour
 {
 	public AudioSource sound;
+    public GameObject buttonControl;
     private string actualFileName = "";
+
 	// Use this for initialization
 	void Start()
 	{
-		//GetComponent<AudioSource>().playOnAwake = false;
-		//sound = GetComponent<AudioSource>();
         sound.playOnAwake = false;
 	}
+
+    void Update()
+    {
+        if(transform.childCount == 0) {
+            if(sound.isPlaying) { sound.Stop(); }
+            buttonControl.GetComponent<MovableButton>().Reset();
+            buttonControl.GetComponent<PlayAudio>().launched = false;
+        }
+    }
 
 	// Mettre un collider sur chacun des objets
 	void OnTriggerEnter(Collider other)
@@ -24,10 +33,12 @@ public class CDCharger : MonoBehaviour
             
             //Debug.Log("collision");
 			if (other.GetComponent<CD> () != null && !other.GetComponent<CD>().IsPlaced() && other. GetComponent<CD>().fileName!=actualFileName) {
+                // Place the CD
                 CD cd = other.GetComponent<CD>();
                 cd.SetPlaced(true);
 				cd.transform.parent = this.gameObject.transform;
 
+                // Transform of CD
                 cd.transform.position = transform.position;
                 cd.transform.rotation = transform.rotation;
 
@@ -35,22 +46,16 @@ public class CDCharger : MonoBehaviour
                 cd.transform.localRotation = Quaternion.Euler(new Vector3(-90.0f, 0.0f, 0.0f));
                 cd.transform.localScale = new Vector3(0.55f, 0.55f, 1.0f);
 
-                
-                //cd.gameObject.transform.position = this.gameObject.transform.position;
-                //            cd.gameObject.transform.rotation = this.gameObject.transform.rotation;
-                //            cd.gameObject.transform.localScale = this.gameObject.transform.localScale;
+                // Sound Manager
+                buttonControl.GetComponent<MovableButton>().Reset();
+                buttonControl.GetComponent<PlayAudio>().launched = false;
+                sound.clip = LoadResources.audioFiles[cd.fileName];
 
-                //AudioClip clip1 = (AudioClip)Resources.Load(other.GetComponent<CD>().fileName);
-                //AudioClip clip1 = (AudioClip)Resources.Load(cd.fileName);
-                //actualFileName = cd.fileName;
-                sound.Stop();
-                sound.PlayOneShot(LoadResources.audioFiles[cd.fileName]);
-
-                if(LoadResources.audioFiles[cd.fileName] == null)
-                {
+                if(LoadResources.audioFiles[cd.fileName] == null) {
                     Debug.Log("Problème chargement cd dans CDCharger");
                 }
 
+                // Out of control
                 other.gameObject.GetComponent<Movable>().Detach();
 			}
 			//SteamVR_Controller.Input((int)controller.controllerIndex).TriggerHapticPulse((ushort)3999);
