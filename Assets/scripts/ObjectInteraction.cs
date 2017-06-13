@@ -9,7 +9,6 @@ public class ObjectInteraction : MonoBehaviour
 	private Vector3 base_offset;
 	private Vector3 offset_position;
     private bool isClicked =false;
-    private bool isPadClicked = false;
     public int pulsation = 900;
 
     
