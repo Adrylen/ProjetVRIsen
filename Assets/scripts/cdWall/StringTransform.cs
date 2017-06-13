@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class StringTransform : MonoBehaviour {
 	
-	public static int[] Transform(string toTransform){
+	public static int[] TransformColor(string toTransform){
 		return intToRGBArray (hashCode (toTransform));
 	}
 
@@ -25,7 +25,7 @@ public class StringTransform : MonoBehaviour {
 	public static int hashCode(string str){
 		var hash = 0;
 		for (var i = 0; i < str.Length; i++) {
-			hash = str[i] + ((hash << 6) - hash);
+			hash = str[i] + ((hash << 5) - hash);
 		}
 		return hash;
 	}

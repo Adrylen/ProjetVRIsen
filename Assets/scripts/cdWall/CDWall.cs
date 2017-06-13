@@ -41,6 +41,9 @@ public class CDWall : MonoBehaviour {
     {
         GameObject temp;
         GameObject parentCube = new GameObject();
+        Renderer tempColor;
+        int[] tempArray;
+        StringTransform test;
         Vector3 position;
         int xPos=0, yPos=0;
 
@@ -50,6 +53,9 @@ public class CDWall : MonoBehaviour {
             yPos = i % 14;
             position = new Vector3((float)xPos * 1.1F,(float)yPos*1.1F, 0);
             temp = (GameObject)Instantiate(templateCube, position, Quaternion.identity,parentCube.transform);
+            tempColor=temp.GetComponent<Renderer>();
+            tempArray = StringTransform.TransformColor(infos[i].FullName);
+            tempColor.material.SetColor("_Color", new Color((float)tempArray[0]/255, (float)tempArray[1]/255, (float)tempArray[2]/255));
         }
 
         parentCube.transform.parent = gameObject.transform;
