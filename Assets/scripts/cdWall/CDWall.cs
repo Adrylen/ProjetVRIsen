@@ -13,9 +13,6 @@ public class CDWall : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		DirectoryInfo dir = new DirectoryInfo("assets/sounds");
-		FileInfo[] info = dir.GetFiles("*.*");
-
         //cds = new GameObject[info.Length];
         //wall = transform.root.gameObject;
 
@@ -29,7 +26,7 @@ public class CDWall : MonoBehaviour {
         //cds [0].transform.position = origin;
         //cds [0].transform.parent = wall.transform;
 
-        initCdWall(info);
+        initCdWall();
 	}
 	
 	// Update is called once per frame
@@ -37,7 +34,7 @@ public class CDWall : MonoBehaviour {
 		
 	}
 
-    void initCdWall (FileInfo[] infos)
+    void initCdWall ()
     {
         GameObject temp;
         GameObject parentCube = new GameObject();
@@ -46,16 +43,20 @@ public class CDWall : MonoBehaviour {
         StringTransform test;
         Vector3 position;
         int xPos=0, yPos=0;
+        
 
-        for (int i = 0; i< infos.Length; i++)
+        for (int i = 0; i< LoadResources.fileNames.Length; i++)
         {
             if (yPos == 13) { xPos++; }
             yPos = i % 14;
             position = new Vector3((float)xPos * 1.1F,(float)yPos*1.1F, 0);
             temp = (GameObject)Instantiate(templateCube, position, Quaternion.identity,parentCube.transform);
+			temp.GetComponentInChildren<TextMesh>().text = LoadResources.fileNames[i];
             tempColor=temp.GetComponent<Renderer>();
-            tempArray = StringTransform.TransformColor(infos[i].FullName);
+			tempArray = StringTransform.TransformColor(LoadResources.fileNames[i]);
             tempColor.material.SetColor("_Color", new Color((float)tempArray[0]/255, (float)tempArray[1]/255, (float)tempArray[2]/255));
+            temp.GetComponent<StockSound>().filename = LoadResources.fileNames[i];
+            temp.GetComponent<StockSound>().boxMaterial = tempColor;
         }
 
         parentCube.transform.parent = gameObject.transform;
