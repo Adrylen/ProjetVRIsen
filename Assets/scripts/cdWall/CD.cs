@@ -21,10 +21,6 @@ public class CD : Movable
         return placed;
     }
 
-	public bool IsPlaced(){
-		return placed;
-	}
-
     public void SetPlaced(bool placed)
     {
         this.placed = placed;

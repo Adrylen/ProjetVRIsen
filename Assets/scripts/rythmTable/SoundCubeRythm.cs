@@ -9,8 +9,13 @@ public class SoundCubeRythm : Movable {
 
     public override void Movement(GameObject controller)
     {
-        filename = controller.GetComponent<ControllerCD>().filename;
-        boxMaterial = controller.GetComponent<ControllerCD>().boxMaterial;
+        if (filename != controller.GetComponent<ControllerCD>().filename)
+        {
+            filename = controller.GetComponent<ControllerCD>().filename;
+            boxMaterial = controller.GetComponent<ControllerCD>().boxMaterial;
+            gameObject.GetComponent<Renderer>().material.SetColor("_Color", boxMaterial.material.color);
+        }
+
     }
 
 }
