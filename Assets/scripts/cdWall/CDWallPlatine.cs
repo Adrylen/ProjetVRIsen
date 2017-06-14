@@ -13,7 +13,7 @@ public class CDWallPlatine : MonoBehaviour {
         wall = new GameObject[rows, cols];
 		for(int i = 0; i < LoadResources.audioFiles.Count; ++i)
         {
-            CreateCd((int)i / rows, i % cols, i);
+            CreateCd((int)i / cols, i % cols, i);
         }
 	}
 
