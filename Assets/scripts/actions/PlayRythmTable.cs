@@ -13,9 +13,11 @@ public class PlayRythmTable : Actions
             launched = true;
             rythmTable.GetComponent<RythmTable>().StartButton();
         }
-        else
+
+        if(!isActive && launched)
         {
-            
+            launched = false;
+            rythmTable.GetComponent<RythmTable>().StopButton();
         }
     }
 }

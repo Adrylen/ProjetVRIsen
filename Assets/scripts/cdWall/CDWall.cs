@@ -13,19 +13,6 @@ public class CDWall : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        //cds = new GameObject[info.Length];
-        //wall = transform.root.gameObject;
-
-        //origin = new Vector3 (wall.transform.localPosition.x - wall.transform.localScale.x/2 + templateCd.transform.localScale.x, 
-        //			          wall.transform.localPosition.y+wall.transform.localScale.y/2 - templateCd.transform.localScale.y,
-        //			          wall.transform.localPosition.z-wall.transform.localScale.z/2);
-
-        ////templateCd.transform.localScale (new Vector3());
-        //cds [0] = Instantiate (templateCd);
-        //cds [0].transform.Rotate (new Vector3 (90, 0, 0));
-        //cds [0].transform.position = origin;
-        //cds [0].transform.parent = wall.transform;
-
         initCdWall();
 	}
 	
@@ -40,16 +27,15 @@ public class CDWall : MonoBehaviour {
         GameObject parentCube = new GameObject();
         Renderer tempColor;
         int[] tempArray;
-        StringTransform test;
         Vector3 position;
         int xPos=0, yPos=0;
         
 
         for (int i = 0; i< LoadResources.fileNames.Length; i++)
         {
-            if (yPos == 13) { xPos++; }
-            yPos = i % 14;
-            position = new Vector3((float)xPos * 1.1F,(float)yPos*1.1F, 0);
+            if (yPos == 9) { xPos++; }
+            yPos = i % 10;
+            position = new Vector3((float)xPos * 1.5F,(float)yPos*1.5F, 0);
             temp = (GameObject)Instantiate(templateCube, position, Quaternion.identity,parentCube.transform);
 			temp.GetComponentInChildren<TextMesh>().text = LoadResources.fileNames[i];
             tempColor=temp.GetComponent<Renderer>();
