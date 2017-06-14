@@ -25,6 +25,21 @@ public class RythmTable : Movable
         lineUpdateOnButtonPos(test, buttonTransform);
     }
 
+    public void StartButton()
+    {
+        InvokeRepeating("tempo", 0f, 10f);
+    }
+
+    void tempo()
+    {
+        int i=0;
+        foreach (List<GameObject> liste in test)
+        {
+            liste[i].GetComponent<AudioSource>().PlayOneShot(LoadResources.audioFiles[liste[i].GetComponent<SoundCubeRythm>().filename]);
+        }
+        i++;
+        if (i > test.nbElementPerLine) { i = 0; }
+    }
 
     public override void Movement(GameObject controller)
     {

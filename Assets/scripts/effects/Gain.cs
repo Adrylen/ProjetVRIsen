@@ -6,8 +6,10 @@ public class Gain : Effect {
 	public float maximum = 1.0f;
 
 	public override void ApplyEffect(float value){
+        Debug.Log(value);
 		float gain = value * 24.0f - 12.0f;
-		maximum = Mathf.Pow (10.0f, gain) / 10.0f;
-		audioSource.volume *= maximum;
-	}
+        float temp = Mathf.Pow(10.0f, gain / 10.0f);
+        //maximum = Mathf.Pow (10.0f, gain) / 10.0f;
+        //audioSource.volume *= maximum;
+    }
 }
