@@ -26,8 +26,15 @@ public class RythmTable : Movable
         lineUpdateOnButtonPos(test, buttonTransform);
     }
 
+    public void changeTempo(float tempo)
+    {
+        CancelInvoke();
+        InvokeRepeating("tempo", tempo, tempo);
+    }
+
     public void StartButton()
     {
+        CancelInvoke();
         InvokeRepeating("tempo", 0f, 1f);
     }
 
