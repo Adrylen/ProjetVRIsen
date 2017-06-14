@@ -10,7 +10,8 @@ public class RythmTable : Movable
     public GameObject InteractionButton;
     private Transform buttonTransform;
     private Vector3 origin = new Vector3();
-
+    private int index = 0;
+    private float space = 0.3F;
     // Use this for initialization
     void Start()
     {
@@ -27,18 +28,45 @@ public class RythmTable : Movable
 
     public void StartButton()
     {
-        InvokeRepeating("tempo", 0f, 10f);
+        InvokeRepeating("tempo", 0f, 1f);
+    }
+
+    public void StopButton()
+    {
+        foreach(List<GameObject> liste in test)
+        {
+            for(int i=0; i<liste.Count; i++)
+            {
+                liste[i].GetComponent<AudioSource>().Stop();
+            }
+        }
+        CancelInvoke();
     }
 
     void tempo()
     {
-        int i=0;
+        Renderer temp;
+        foreach(List<GameObject> liste in test)
+        {
+            for(int i=0; i<liste.Count; i++)
+            {
+                liste[i].GetComponent<Renderer>().material.SetColor("_Color", liste[i].GetComponent<SoundCubeRythm>().boxColor);
+            }
+        }
+        
         foreach (List<GameObject> liste in test)
         {
-            liste[i].GetComponent<AudioSource>().PlayOneShot(LoadResources.audioFiles[liste[i].GetComponent<SoundCubeRythm>().filename]);
+            temp = liste[index].GetComponent<Renderer>();
+            temp.material.SetColor("_Color", Color.cyan);
+            if (liste[index].GetComponent<SoundCubeRythm>().filename != "")
+            {
+                liste[index].GetComponent<AudioSource>().Stop();
+                liste[index].GetComponent<AudioSource>().PlayOneShot(LoadResources.audioFiles[liste[index].GetComponent<SoundCubeRythm>().filename]);
+            }
         }
-        i++;
-        if (i > test.nbElementPerLine) { i = 0; }
+        index++;
+        
+        if (index >= test.nbElementPerLine) { index = 0; }
     }
 
     public override void Movement(GameObject controller)
@@ -83,10 +111,10 @@ public class RythmTable : Movable
         {
             for (int i = 0; i < aRythmBox.nbElementPerLine; i++)
             {
-                tempPosition = new Vector3((1.1f * i), yPos, 0);
+                tempPosition = new Vector3(((space+1) * i), yPos, 0);
                 element.Add((GameObject)Instantiate(templateCube, tempPosition, Quaternion.identity, temp.transform));
             }
-            yPos -= (1.1F);
+            yPos -= (space+1);
             xPos = gameObject.transform.localPosition.x;
         }
 
@@ -113,7 +141,7 @@ public class RythmTable : Movable
         tempPosition = new Vector3(0, 0, 0);
         temp = (GameObject)Instantiate(InteractionButton, tempPosition, Quaternion.identity, gameObject.transform);
         temp.transform.rotation = transform.rotation;
-        tempPosition = new Vector3(1.1F * aRythmBox.nbElementPerLine, -1.1F * aRythmBox.nbLine, 0);
+        tempPosition = new Vector3((space+1) * aRythmBox.nbElementPerLine, -(space+1) * aRythmBox.nbLine, 0);
         temp.transform.localPosition = tempPosition;
     }
 
@@ -126,7 +154,7 @@ public class RythmTable : Movable
 
         // Updating aRythmBox columnn number
 
-        xPos = (1.1F) * aRythmBox.nbElementPerLine;
+        xPos = (space+1) * aRythmBox.nbElementPerLine;
         aRythmBox.nbElementPerLine++;
 
         // Cube filling
@@ -135,7 +163,7 @@ public class RythmTable : Movable
         {
             Vector3 tempPosition = new Vector3(xPos, yPos, 0.0f);
             element.Add((GameObject)Instantiate(templateCube, tempPosition, Quaternion.identity, temp.transform));
-            yPos -= (1.1F);
+            yPos -= (space+1);
         }
 
         // Rotation adaptation
@@ -166,7 +194,7 @@ public class RythmTable : Movable
         GameObject temp = new GameObject();
         Vector3 tempPosition;
         float yPos, xPos;
-        yPos = (-1.1F) * aRythmBox.nbLine;
+        yPos = -(space+1) * aRythmBox.nbLine;
         xPos = 0;
 
         aRythmBox.Add(newList);
@@ -174,7 +202,7 @@ public class RythmTable : Movable
 
         for (int i = 0; i < aRythmBox.nbElementPerLine; i++)
         {
-            tempPosition = new Vector3(xPos + (1.1f * i), yPos, 0);
+            tempPosition = new Vector3(xPos + ((space+1) * i), yPos, 0);
             newList.Add((GameObject)Instantiate(templateCube, tempPosition, Quaternion.identity, temp.transform));
         }
 
@@ -216,6 +244,8 @@ public class RythmTable : Movable
             aRythmBox.nbElementPerLine--;
         }
 
+        index = 0;
+
     }
 
     void removeLine(CustomArrayList aRythmBox)
@@ -232,13 +262,14 @@ public class RythmTable : Movable
             aRythmBox.RemoveAt(aRythmBox.nbLine - 1);
             aRythmBox.nbLine--;
         }
+        index = 0;
     }
 
     void lineUpdateOnButtonPos(CustomArrayList aRythmBox, Transform aButton)
     {
-        if (aButton.transform.localPosition.x > (aRythmBox.nbElementPerLine + 1) * 1.1F) { addRows(aRythmBox); }
-        if (aButton.transform.localPosition.x < (aRythmBox.nbElementPerLine - 1) * 1.1f) { removeRow(aRythmBox); }
-        if (aButton.transform.localPosition.y < -(aRythmBox.nbLine + 1) * 1.1F) { addLine(aRythmBox); }
-        if (aButton.transform.localPosition.y > -(aRythmBox.nbLine - 1) * 1.1f) { removeLine(aRythmBox); }
+        if (aButton.transform.localPosition.x > (aRythmBox.nbElementPerLine + 1) * (space + 1)) { addRows(aRythmBox); }
+        if (aButton.transform.localPosition.x < (aRythmBox.nbElementPerLine - 1) * (space + 1)) { removeRow(aRythmBox); }
+        if (aButton.transform.localPosition.y < -(aRythmBox.nbLine + 1) * (space + 1)) { addLine(aRythmBox); }
+        if (aButton.transform.localPosition.y > -(aRythmBox.nbLine - 1) * (space + 1)) { removeLine(aRythmBox); }
     }
 }

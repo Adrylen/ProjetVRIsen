@@ -28,12 +28,17 @@ public class ScrollText : MonoBehaviour {
 
 
 	void UpdateText(){
-		//text.text = baseString [index % length].ToString();
-		text.text = new string (SubArray (baseString, index, maxLetters));
-		index++;
-		if ((index + maxLetters) >= length+1){
-			index = 0;
-		}
+        //text.text = baseString [index % length].ToString();
+
+        if (maxLetters < length)
+        {
+            text.text = new string(SubArray(baseString, index, maxLetters));
+            index++;
+            if ((index + maxLetters) >= length + 1)
+            {
+                index = 0;
+            }
+        }
 	}
 
 	// Update is called once per frame

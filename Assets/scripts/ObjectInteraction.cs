@@ -15,6 +15,15 @@ public class ObjectInteraction : MonoBehaviour
 	}
 
 	void Update() {
+        if (controller.gripped)
+        {
+            if(controller.transform.childCount>1)
+            {
+                controller.GetComponent<ControllerCD>().Reset();
+                Destroy(controller.transform.GetChild(1).gameObject);
+            }
+        }
+
         // Trigger pressed
 		if (controller.triggerPressed) {
             // Has target

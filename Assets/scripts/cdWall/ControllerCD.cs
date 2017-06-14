@@ -6,4 +6,10 @@ public class ControllerCD : MonoBehaviour {
 
     public string filename;
     public Renderer boxMaterial;
+
+    public void Reset()
+    {
+        boxMaterial = gameObject.GetComponent<Renderer>();
+        filename = "";
+    }
 }
