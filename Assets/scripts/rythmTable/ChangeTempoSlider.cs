@@ -26,8 +26,9 @@ public class ChangeTempoSlider : Effect
 
     public override void ApplyEffect(float value)
     {
+		value = value + 0.2f;
         if (value != -1) { actualValue = value; }
         rythmtable.GetComponent<RythmTable>().changeTempo(actualValue* 0.5f);
-		text.text = 1/actualValue*60 + "BPM";
+		text.text = (int)(1/actualValue*60) + "BPM";
     }
 }
