@@ -23,6 +23,7 @@ public class SoundCubeRythm : Movable {
             filename = "";
             boxColor = Color.white;
             gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.white);
+            gameObject.GetComponent<AudioSource>().Stop();
         }
         if (filename != controller.GetComponent<ControllerCD>().filename)
         {

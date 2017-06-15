@@ -31,17 +31,17 @@ public class CDWall : MonoBehaviour {
         int xPos=0, yPos=0;
         
 
-        for (int i = 0; i< LoadResources.fileNames.Length; i++)
+        for (int i = 0; i< LoadResources.soundNames.Length; i++)
         {
             if (yPos == 9) { xPos++; }
             yPos = i % 10;
             position = new Vector3((float)xPos * 1.5F,(float)yPos*1.5F, 0);
             temp = (GameObject)Instantiate(templateCube, position, Quaternion.identity,parentCube.transform);
-			temp.GetComponentInChildren<TextMesh>().text = LoadResources.fileNames[i];
+			temp.GetComponentInChildren<TextMesh>().text = LoadResources.soundNames[i];
             tempColor=temp.GetComponent<Renderer>();
-			tempArray = StringTransform.TransformColor(LoadResources.fileNames[i]);
+			tempArray = StringTransform.TransformColor(LoadResources.soundNames[i]);
             tempColor.material.SetColor("_Color", new Color((float)tempArray[0]/255, (float)tempArray[1]/255, (float)tempArray[2]/255));
-            temp.GetComponent<StockSound>().filename = LoadResources.fileNames[i];
+            temp.GetComponent<StockSound>().filename = LoadResources.soundNames[i];
             temp.GetComponent<StockSound>().boxMaterial = tempColor;
         }
 
