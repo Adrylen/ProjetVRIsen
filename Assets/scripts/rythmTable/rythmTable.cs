@@ -68,7 +68,7 @@ public class RythmTable : Movable
             if (liste[index].GetComponent<SoundCubeRythm>().filename != "")
             {
                 liste[index].GetComponent<AudioSource>().Stop();
-                liste[index].GetComponent<AudioSource>().PlayOneShot(LoadResources.audioFiles[liste[index].GetComponent<SoundCubeRythm>().filename]);
+                liste[index].GetComponent<AudioSource>().PlayOneShot(LoadResources.soundFiles[liste[index].GetComponent<SoundCubeRythm>().filename]);
             }
         }
         index++;
