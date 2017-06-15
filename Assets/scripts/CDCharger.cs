@@ -5,7 +5,8 @@ using UnityEngine;
 public class CDCharger : MonoBehaviour
 {
 	public AudioSource sound;
-    public GameObject buttonControl;
+    public GameObject playControl;
+    public GameObject loopControl;
     private string actualFileName = "";
 
 	// Use this for initialization
@@ -18,10 +19,16 @@ public class CDCharger : MonoBehaviour
     {
         if(transform.childCount == 0) {
             if(sound.isPlaying) { sound.Stop(); }
-            buttonControl.GetComponent<MovableButton>().Reset();
-            buttonControl.GetComponent<PlayAudio>().launched = false;
+			ResetButtons ();
         }
     }
+
+	private void ResetButtons() {
+		playControl.GetComponent<MovableButton>().Reset();
+		loopControl.GetComponent<MovableButton>().Reset();
+		playControl.GetComponent<PlayAudio>().launched = false;
+		loopControl.GetComponent<LoopAction>().audioSource.loop = false;
+	}
 
 	// Mettre un collider sur chacun des objets
 	void OnTriggerEnter(Collider other)
@@ -47,8 +54,7 @@ public class CDCharger : MonoBehaviour
                 cd.transform.localScale = new Vector3(0.55f, 0.55f, 1.0f);
 
                 // Sound Manager
-                buttonControl.GetComponent<MovableButton>().Reset();
-                buttonControl.GetComponent<PlayAudio>().launched = false;
+				ResetButtons();
                 sound.clip = LoadResources.audioFiles[cd.fileName];
 
                 if(LoadResources.audioFiles[cd.fileName] == null) {
