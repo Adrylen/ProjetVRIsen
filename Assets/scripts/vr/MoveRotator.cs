@@ -7,7 +7,6 @@ public class MoveRotator : Movable {
     private float yMin = -150.0F;
     private Quaternion origin;
     private Vector3 vecTransition;
-    private bool locked = false;
 
     void Start () {
         origin = transform.parent.localRotation;
@@ -16,10 +15,6 @@ public class MoveRotator : Movable {
 
     public void Reset() {
         transform.parent.localRotation = Quaternion.Euler(origin.eulerAngles.x, yMin, origin.eulerAngles.z);
-    }
-
-    public void Locked(bool locked) {
-        this.locked = locked;
     }
 
     public override void Movement(GameObject controller)

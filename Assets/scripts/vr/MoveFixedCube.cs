@@ -7,8 +7,9 @@ public class MoveFixedCube : Movable {
 
 	public bool invertXAxis;
 
-	// Use this for initialization
-	void Start () {
+	void Start() { Reset (); }
+
+	public void Reset () {
 		transform.localPosition = new Vector3 (
 			invertXAxis ? border : -border,
 		-border, -border);
@@ -16,13 +17,21 @@ public class MoveFixedCube : Movable {
 	}
 	
 	public override void Movement(GameObject controller) {
-		transform.position = controller.transform.position;
+		if (!locked) {
+			transform.position = controller.transform.position;
 
-		transform.localPosition = new Vector3 (
-			CheckPosition(transform.localPosition.x),
-			CheckPosition(transform.localPosition.y),
-			CheckPosition(transform.localPosition.z)
-		);
+			transform.localPosition = new Vector3 (
+				CheckPosition(transform.localPosition.x),
+				CheckPosition(transform.localPosition.y),
+				CheckPosition(transform.localPosition.z)
+			);
+
+			GetComponent<Effect> ().ApplyEffect (
+				(transform.localPosition.x + 0.4f) * 1.25f,
+				(transform.localPosition.y + 0.4f) * 1.25f,
+				(transform.localPosition.z + 0.4f) * 1.25f
+			);
+		}
 	}
 
 	private float CheckPosition(float p) {
