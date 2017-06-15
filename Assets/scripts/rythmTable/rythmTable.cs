@@ -16,7 +16,7 @@ public class RythmTable : Movable
     void Start()
     {
         InitRythmBox(test);
-        buttonTransform = transform.GetChild(13);
+        buttonTransform = transform.parent.GetChild(2);
         origin = buttonTransform.transform.localPosition;
     }
 
@@ -146,7 +146,7 @@ public class RythmTable : Movable
 
         // Interaction button generation & placement
         tempPosition = new Vector3(0, 0, 0);
-        temp = (GameObject)Instantiate(InteractionButton, tempPosition, Quaternion.identity, gameObject.transform);
+        temp = (GameObject)Instantiate(InteractionButton, tempPosition, Quaternion.identity, gameObject.transform.parent);
         temp.transform.rotation = transform.rotation;
         tempPosition = new Vector3((space+1) * aRythmBox.nbElementPerLine, -(space+1) * aRythmBox.nbLine, 0);
         temp.transform.localPosition = tempPosition;
