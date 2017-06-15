@@ -37,7 +37,7 @@ public class Movable : MonoBehaviour {
     }
 
     public virtual void Movement(Object controller) { }
-    public virtual void enterInput() { }
+    public virtual void enterInput(Object controller) { }
     public virtual void triggerClicked() { }
     public virtual void PadClicked() { }
     public virtual void PadReleased() { }

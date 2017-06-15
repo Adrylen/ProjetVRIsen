@@ -12,12 +12,18 @@ public class RythmTable : Movable
     private Vector3 origin = new Vector3();
     private int index = 0;
     private float space = 0.3F;
+
+	bool active = false;
+	float _tempo;
+
     // Use this for initialization
     void Start()
     {
         InitRythmBox(test);
-        buttonTransform = transform.GetChild(13);
+        buttonTransform = transform.parent.GetChild(2);
         origin = buttonTransform.transform.localPosition;
+		_tempo = 1f;
+
     }
 
     // Update is called once per frame
@@ -28,18 +34,25 @@ public class RythmTable : Movable
 
     public void changeTempo(float tempo)
     {
-        CancelInvoke();
-        InvokeRepeating("tempo", tempo, tempo);
+        _tempo = tempo;
+
+        if (active) {
+			CancelInvoke ();
+			InvokeRepeating ("tempo", _tempo, _tempo);
+		}
     }
 
     public void StartButton()
     {
+		active = true;
         CancelInvoke();
-        InvokeRepeating("tempo", 0f, 1f);
+        InvokeRepeating("tempo", 0f, _tempo);
     }
 
     public void StopButton()
     {
+		active = false;
+
         foreach(List<GameObject> liste in test)
         {
             for(int i=0; i<liste.Count; i++)
@@ -146,7 +159,7 @@ public class RythmTable : Movable
 
         // Interaction button generation & placement
         tempPosition = new Vector3(0, 0, 0);
-        temp = (GameObject)Instantiate(InteractionButton, tempPosition, Quaternion.identity, gameObject.transform);
+        temp = (GameObject)Instantiate(InteractionButton, tempPosition, Quaternion.identity, gameObject.transform.parent);
         temp.transform.rotation = transform.rotation;
         tempPosition = new Vector3((space+1) * aRythmBox.nbElementPerLine, -(space+1) * aRythmBox.nbLine, 0);
         temp.transform.localPosition = tempPosition;

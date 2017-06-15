@@ -52,7 +52,7 @@ public class ObjectInteraction : MonoBehaviour
             SteamVR_Controller.Input((int)controller.controllerIndex).TriggerHapticPulse((ushort)pulsation);
             target = other.gameObject;
             if (target.GetComponent<Movable>() != null) {
-                target.GetComponent<Movable>().enterInput();
+                target.GetComponent<Movable>().enterInput(controller);
             }
 		}
         if(other.gameObject.CompareTag("DrumStick") && target == null) {

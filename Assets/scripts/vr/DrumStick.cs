@@ -11,7 +11,7 @@ public class DrumStick : Movable {
         rBody = GetComponent<Rigidbody>();
     }
 
-    public override void enterInput()
+    public override void enterInput(Object controller)
     {
         Debug.Log("OK");
         gameObject.tag = "DrumStick";
