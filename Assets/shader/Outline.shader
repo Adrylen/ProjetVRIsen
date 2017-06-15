@@ -1,85 +1,168 @@
-﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+﻿// Upgrade NOTE: replaced '_World2Object' with 'unity_WorldToObject'
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
 
 // Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
 
 Shader "Outlined/Silhouetted Bumped Diffuse" {
-	Properties {
-		_OutlineColor ("Outline Color", Color) = (0,0,0,1)
-		_Outline ("Outline width", Range (0.0, 0.03)) = .005
+	Properties{
+		_Color("Main Color", Color) = (0,0,0,1)
+		_OutlineColor("Outline Color", Color) = (1,0.8,0,1)
+		_Outline("Outline width", Range(0.0, 0.6)) = .09
+		_OutlineOffset("Outline Offset", Vector) = (0, 0, 0)
+		_MainTex("Base (RGB)", 2D) = "white" { }
+	_Alpha("Alpha", Float) = 0.8
 	}
- 
-CGINCLUDE
+
+		CGINCLUDE
 #include "UnityCG.cginc"
- 
-struct appdata {
-	float4 vertex : POSITION;
-	float3 normal : NORMAL;
-};
- 
-struct v2f {
-	float4 pos : POSITION;
-	float4 color : COLOR;
-};
- 
-uniform float _Outline;
-uniform float4 _OutlineColor;
- 
-v2f vert(appdata v) {
-	// just make a copy of incoming vertex data but scaled according to normal direction
-	v2f o;
-	o.pos = UnityObjectToClipPos(v.vertex);
- 
-	float3 norm   = mul ((float3x3)UNITY_MATRIX_IT_MV, v.normal);
-	float2 offset = TransformViewToProjection(norm.xy);
- 
-	o.pos.xy += offset * o.pos.z * _Outline;
-	o.color = _OutlineColor;
-	return o;
-}
-ENDCG
- 
-	SubShader {
-		Tags { "Queue" = "Transparent" }
- 
-		Pass {
-			Name "BASE"
-			Cull Back
-			Blend Zero One
- 
-			// uncomment this to hide inner details:
-			//Offset -8, -8
- 
-			SetTexture [_OutlineColor] {
-				ConstantColor (0,0,0,0)
-				Combine constant
-			}
-		}
- 
-		// note that a vertex shader is specified here but its using the one above
-		Pass {
-			Name "OUTLINE"
-			Tags { "LightMode" = "Always" }
-			Cull Front
- 
-			// you can choose what kind of blending mode you want for the outline
-			//Blend SrcAlpha OneMinusSrcAlpha // Normal
-			//Blend One One // Additive
-			Blend One OneMinusDstColor // Soft Additive
-			//Blend DstColor Zero // Multiplicative
-			//Blend DstColor SrcColor // 2x Multiplicative
- 
-CGPROGRAM
+	struct appdata {
+		half4 vertex : POSITION;
+		half3 normal : NORMAL;
+		half2 texcoord : TEXCOORD0;
+	};
+
+	struct v2f {
+		half4 pos : POSITION;
+		half2 uv : TEXCOORD0;
+		half3 normalDir : NORMAL;
+	};
+
+	uniform half4 _Color;
+	uniform half _Outline;
+	uniform half4 _OutlineColor;
+
+	ENDCG
+
+		SubShader{
+		Tags{ "Queue" = "Transparent" }
+
+		Pass{
+		Name "STENCIL"
+		ZWrite Off
+		ZTest Always
+		ColorMask 0
+
+		Stencil{
+		Ref 2
+		Comp always
+		Pass replace
+		ZFail decrWrap
+	}
+
+		CGPROGRAM
+
+#pragma vertex vert2
+#pragma fragment frag
+
+		v2f vert2(appdata v)
+	{
+		v2f o;
+		o.pos = UnityObjectToClipPos(v.vertex);
+
+		return o;
+	}
+
+	half4 frag(v2f i) : COLOR
+	{
+		return _Color;
+	}
+
+		ENDCG
+
+
+	}
+
+		Pass{
+		Name "OUTLINE"
+		Tags{ "LightMode" = "Always" }
+		Cull Off
+		ZWrite Off
+		ColorMask RGB
+
+		Blend SrcAlpha OneMinusSrcAlpha
+
+		Stencil{
+		Ref 2
+		Comp NotEqual
+		Pass replace
+		ZFail decrWrap
+	}
+
+		CGPROGRAM
 #pragma vertex vert
 #pragma fragment frag
- 
-half4 frag(v2f i) :COLOR {
-	return i.color;
-}
-ENDCG
-		}
- 
- 
+
+		half3 _OutlineOffset;
+
+	v2f vert(appdata v) {
+		v2f o;
+
+		half3 vertex = v.vertex.xyz;
+		vertex -= _OutlineOffset;
+		vertex.x *= _Outline + 1;
+		vertex.y *= _Outline + 1;
+		vertex.z *= _Outline + 1;
+		vertex += _OutlineOffset;
+		o.pos = UnityObjectToClipPos(half4(vertex, v.vertex.w));
+
+		return o;
 	}
- 
-	Fallback "Diffuse"
+
+	half _Alpha;
+	half4 frag(v2f i) :COLOR{
+		return half4(_OutlineColor.rgb, _Alpha);
+	}
+		ENDCG
+	}
+
+		Pass{
+		Name "BASE"
+		ZWrite On
+		ZTest LEqual
+		Blend SrcAlpha OneMinusSrcAlpha
+
+		CGPROGRAM
+
+#pragma vertex vert2
+#pragma fragment frag
+
+		v2f vert2(appdata v)
+	{
+		v2f o;
+		o.pos = UnityObjectToClipPos(v.vertex);
+		o.uv = v.texcoord;
+		o.normalDir = normalize(mul(half4(v.normal, 0), unity_WorldToObject).xyz);
+
+		return o;
+	}
+
+	uniform sampler2D _MainTex;
+	uniform half4 _LightColor0;
+	half _Alpha;
+
+	half4 frag(v2f i) : COLOR
+	{
+		half4 c = tex2D(_MainTex, i.uv) * _Color;
+		//				c.a = _Color.a;
+		c.a = _Alpha;
+		return c;
+
+		half3 lightDirection = normalize(_WorldSpaceLightPos0.xyz);
+		half diffuse = max(0.4, dot(i.normalDir, lightDirection));
+		half3 tex = tex2D(_MainTex, i.uv).rgb;
+
+		half3 color = diffuse * _LightColor0.rgb * tex * _Color.rgb;
+		return half4(color, _Alpha);
+	}
+
+		ENDCG
+	}
+
+	}
+
+		Fallback Off
 }
