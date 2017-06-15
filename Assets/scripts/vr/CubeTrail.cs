@@ -18,7 +18,7 @@ public class CubeTrail : MonoBehaviour {
 			trail[i] = Instantiate(head);
 			trail[i].transform.parent = transform;
 			trail[i].transform.position = head.transform.position;
-			trail[i].transform.localScale *= 0.999f - 0.01f * i;
+			trail[i].transform.localScale = head.transform.localScale * (0.999f - 0.01f * i);
 			trail[i].name = "CubeTrail"+(i+1);
 
 			trail[i].GetComponent<Collider>().isTrigger = false;

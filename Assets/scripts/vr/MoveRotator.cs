@@ -24,14 +24,17 @@ public class MoveRotator : Movable {
 
     public override void Movement(GameObject controller)
     {
-        transform.parent.rotation = controller.transform.rotation;
-        if (transform.parent.localRotation != origin)
+        if (!locked)
         {
-            float yLoc = transform.parent.localRotation.eulerAngles.y;
-            yLoc -= yLoc >= 180 ? 360.0F : 0;
-			yLoc = yLoc > yMax ? yMax : yLoc < yMin ? yMin : yLoc;
-            transform.parent.localRotation = Quaternion.Euler(vecTransition.x, yLoc, vecTransition.z);
-            gameObject.GetComponentInParent<Effect>().ApplyEffect((yLoc - yMin)/ 300.0F);
+            transform.parent.rotation = controller.transform.rotation;
+            if (transform.parent.localRotation != origin)
+            {
+                float yLoc = transform.parent.localRotation.eulerAngles.y;
+                yLoc -= yLoc >= 180 ? 360.0F : 0;
+                yLoc = yLoc > yMax ? yMax : yLoc < yMin ? yMin : yLoc;
+                transform.parent.localRotation = Quaternion.Euler(vecTransition.x, yLoc, vecTransition.z);
+                gameObject.GetComponentInParent<Effect>().ApplyEffect((yLoc - yMin) / 300.0F);
+            }
         }
     }
 }

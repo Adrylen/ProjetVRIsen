@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MoveFixedCube : Movable {
-	private float border = 0.3499f;
+	private float border = 0.3999f;
 
 	public bool invertXAxis;
 
@@ -19,7 +19,7 @@ public class MoveFixedCube : Movable {
 		transform.position = controller.transform.position;
 
 		transform.localPosition = new Vector3 (
-			CheckPosition(transform.localPosition.x * (invertXAxis ? -1 : 1)),
+			CheckPosition(transform.localPosition.x),
 			CheckPosition(transform.localPosition.y),
 			CheckPosition(transform.localPosition.z)
 		);
