@@ -10,6 +10,9 @@ public class ChangeTempoSlider : Effect
     public float actualValue { get; set; }
     public float faderValue { get; set; }
 
+	public TextMesh text;
+
+
     public GameObject rythmtable;
 
     void Start()
@@ -25,6 +28,6 @@ public class ChangeTempoSlider : Effect
     {
         if (value != -1) { actualValue = value; }
         rythmtable.GetComponent<RythmTable>().changeTempo(actualValue* 0.5f);
-        Debug.Log(actualValue);
+		text.text = 1/actualValue*60 + "BPM";
     }
 }
