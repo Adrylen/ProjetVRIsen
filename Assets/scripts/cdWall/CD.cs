@@ -46,6 +46,12 @@ public class CD : Movable
         return this;
     }
 
+    public override void enterInput(Object controller) {
+        if(((SteamVR_TrackedController)controller).triggerPressed) {
+            Detach();
+        }
+    }
+
     public override void leaveInput()
     {
         if (!placed)
