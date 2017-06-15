@@ -21,7 +21,7 @@ public class MoveFixedCube : Movable {
 		transform.localPosition = new Vector3 (
 			CheckPosition(transform.localPosition.x * (invertXAxis ? -1 : 1)),
 			CheckPosition(transform.localPosition.y),
-			CheckPosition(transform.localPosition.z),
+			CheckPosition(transform.localPosition.z)
 		);
 	}
 
