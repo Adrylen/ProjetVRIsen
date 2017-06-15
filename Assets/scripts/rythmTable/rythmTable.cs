@@ -12,12 +12,18 @@ public class RythmTable : Movable
     private Vector3 origin = new Vector3();
     private int index = 0;
     private float space = 0.3F;
+
+	bool active = false;
+	float _tempo;
+
     // Use this for initialization
     void Start()
     {
         InitRythmBox(test);
         buttonTransform = transform.GetChild(13);
         origin = buttonTransform.transform.localPosition;
+		_tempo = 1f;
+
     }
 
     // Update is called once per frame
@@ -28,18 +34,24 @@ public class RythmTable : Movable
 
     public void changeTempo(float tempo)
     {
-        CancelInvoke();
-        InvokeRepeating("tempo", tempo, tempo);
+		if (active) {
+			_tempo = tempo;
+			CancelInvoke ();
+			InvokeRepeating ("tempo", _tempo, _tempo);
+		}
     }
 
     public void StartButton()
     {
+		active = true;
         CancelInvoke();
-        InvokeRepeating("tempo", 0f, 1f);
+        InvokeRepeating("tempo", 0f, _tempo);
     }
 
     public void StopButton()
     {
+		active = false;
+
         foreach(List<GameObject> liste in test)
         {
             for(int i=0; i<liste.Count; i++)
