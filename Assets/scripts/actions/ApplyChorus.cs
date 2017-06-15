@@ -11,7 +11,7 @@ public class ApplyChorus : Actions {
 	void Start () { Reset(); }
 
 	public void Reset() {
-		rotator.GetComponent<Movable> ().Reset ();
+		rotator.GetComponent<MoveRotator> ().Reset (true);
 		wetCube.GetComponent<Movable> ().Reset ();
 		optCube.GetComponent<Movable> ().Reset ();
 		

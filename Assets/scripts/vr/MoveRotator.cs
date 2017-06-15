@@ -13,8 +13,8 @@ public class MoveRotator : Movable {
         vecTransition = transform.parent.localEulerAngles;
     }
 
-    public void Reset() {
-        transform.parent.localRotation = Quaternion.Euler(origin.eulerAngles.x, yMin, origin.eulerAngles.z);
+	public void Reset(bool max=false) {
+        transform.parent.localRotation = Quaternion.Euler(origin.eulerAngles.x, max ? yMax : yMin, origin.eulerAngles.z);
     }
 
     public override void Movement(GameObject controller)
