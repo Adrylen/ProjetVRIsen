@@ -1,11 +1,4 @@
-﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
-
-// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
-
-// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
-
-// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
-
+﻿// Upgrade NOTE: replaced '_World2Object' with 'unity_WorldToObject'
 // Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
 
 // Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
@@ -14,97 +7,161 @@
 
 Shader "Outlined/Silhouetted Bumped Diffuse" {
 	Properties{
-		_MainTex("Base (RGB)", 2D) = "white" {}
-		_RimCol("Rim Colour" , Color) = (1,1,1,0)
-		_RimPow("Rim Power", Float) = 1.0
+		_Color("Main Color", Color) = (0,0,0,1)
+		_OutlineColor("Outline Color", Color) = (1,0.8,0,1)
+		_Outline("Outline width", Range(0.0, 0.6)) = .09
+		_OutlineOffset("Outline Offset", Vector) = (0, 0, 0)
+		_MainTex("Base (RGB)", 2D) = "white" { }
+	_Alpha("Alpha", Float) = 0.8
 	}
+
+		CGINCLUDE
+#include "UnityCG.cginc"
+
+		struct appdata {
+		half4 vertex : POSITION;
+		half3 normal : NORMAL;
+		half2 texcoord : TEXCOORD0;
+	};
+
+	struct v2f {
+		half4 pos : POSITION;
+		half2 uv : TEXCOORD0;
+		half3 normalDir : NORMAL;
+	};
+
+	uniform half4 _Color;
+	uniform half _Outline;
+	uniform half4 _OutlineColor;
+
+	ENDCG
+
 		SubShader{
+		Tags{ "Queue" = "Transparent" }
+
 		Pass{
-		Name "Behind"
-		Tags{ "RenderType" = "transparent" "Queue" = "Transparent" }
-		Blend SrcAlpha OneMinusSrcAlpha
-		ZTest Greater               // here the check is for the pixel being greater or closer to the camera, in which
-		Cull Back                   // case the model is behind something, so this pass runs
+		Name "STENCIL"
 		ZWrite Off
-		LOD 200
+		ZTest Always
+		ColorMask 0
+
+		Stencil{
+		Ref 2
+		Comp always
+		Pass replace
+		ZFail decrWrap
+	}
 
 		CGPROGRAM
-#pragma vertex vert
+
+#pragma vertex vert2
 #pragma fragment frag
-#include "UnityCG.cginc"
 
-		struct v2f {
-		float4 pos : SV_POSITION;
-		float2 uv : TEXCOORD0;
-		float3 normal : TEXCOORD1;      // Normal needed for rim lighting
-		float3 viewDir : TEXCOORD2;     // as is view direction.
-	};
-
-	sampler2D _MainTex;
-	float4 _RimCol;
-	float _RimPow;
-
-	float4 _MainTex_ST;
-
-	v2f vert(appdata_tan v)
+		v2f vert2(appdata v)
 	{
 		v2f o;
 		o.pos = UnityObjectToClipPos(v.vertex);
-		o.uv = TRANSFORM_TEX(v.texcoord, _MainTex);
-		o.normal = normalize(v.normal);
-		o.viewDir = normalize(ObjSpaceViewDir(v.vertex));       //this could also be WorldSpaceViewDir, which would
-		return o;                                               //return the World space view direction.
-	}
 
-	half4 frag(v2f i) : COLOR
-	{
-		half Rim = 1 - saturate(dot(normalize(i.viewDir), i.normal));       //Calculates where the model view falloff is       
-																			//for rim lighting.
-
-	half4 RimOut = _RimCol * pow(Rim, _RimPow);
-	return RimOut;
-	}
-		ENDCG
-	}
-
-		Pass{
-		Name "Regular"
-		Tags{ "RenderType" = "Opaque" }
-		ZTest LEqual                // this checks for depth of the pixel being less than or equal to the shader
-		ZWrite On                   // and if the depth is ok, it renders the main texture.
-		Cull Back
-		LOD 200
-
-		CGPROGRAM
-#pragma vertex vert
-#pragma fragment frag
-#include "UnityCG.cginc"
-
-		struct v2f {
-		float4 pos : SV_POSITION;
-		float2 uv : TEXCOORD0;
-	};
-
-	sampler2D _MainTex;
-	float4 _MainTex_ST;
-
-	v2f vert(appdata_base v)
-	{
-		v2f o;
-		o.pos = UnityObjectToClipPos(v.vertex);
-		o.uv = TRANSFORM_TEX(v.texcoord, _MainTex);
 		return o;
 	}
 
 	half4 frag(v2f i) : COLOR
 	{
-		half4 texcol = tex2D(_MainTex,i.uv);
-		return texcol;
+		return _Color;
+	}
+
+		ENDCG
+
+
+	}
+
+		Pass{
+		Name "OUTLINE"
+		Tags{ "LightMode" = "Always" }
+		Cull Off
+		ZWrite Off
+		ColorMask RGB
+
+		Blend SrcAlpha OneMinusSrcAlpha
+
+		Stencil{
+		Ref 2
+		Comp NotEqual
+		Pass replace
+		ZFail decrWrap
+	}
+
+		CGPROGRAM
+#pragma vertex vert
+#pragma fragment frag
+
+		half3 _OutlineOffset;
+
+	v2f vert(appdata v) {
+		v2f o;
+
+		half3 vertex = v.vertex.xyz;
+		vertex -= _OutlineOffset;
+		vertex.x *= _Outline + 1;
+		vertex.y *= _Outline + 1;
+		vertex.z *= _Outline + 1;
+		vertex += _OutlineOffset;
+		o.pos = UnityObjectToClipPos(half4(vertex, v.vertex.w));
+
+		return o;
+	}
+
+	half _Alpha;
+	half4 frag(v2f i) :COLOR{
+		return half4(_OutlineColor.rgb, _Alpha);
 	}
 		ENDCG
 	}
+
+		Pass{
+		Name "BASE"
+		ZWrite On
+		ZTest LEqual
+		Blend SrcAlpha OneMinusSrcAlpha
+
+		CGPROGRAM
+
+#pragma vertex vert2
+#pragma fragment frag
+
+		v2f vert2(appdata v)
+	{
+		v2f o;
+		o.pos = UnityObjectToClipPos(v.vertex);
+		o.uv = v.texcoord;
+		o.normalDir = normalize(mul(half4(v.normal, 0), unity_WorldToObject).xyz);
+
+		return o;
 	}
-		FallBack "VertexLit"
+
+	uniform sampler2D _MainTex;
+	uniform half4 _LightColor0;
+	half _Alpha;
+
+	half4 frag(v2f i) : COLOR
+	{
+		half4 c = tex2D(_MainTex, i.uv) * _Color;
+		//				c.a = _Color.a;
+		c.a = _Alpha;
+		return c;
+
+		half3 lightDirection = normalize(_WorldSpaceLightPos0.xyz);
+		half diffuse = max(0.4, dot(i.normalDir, lightDirection));
+		half3 tex = tex2D(_MainTex, i.uv).rgb;
+
+		half3 color = diffuse * _LightColor0.rgb * tex * _Color.rgb;
+		return half4(color, _Alpha);
+	}
+
+		ENDCG
+	}
+
+	}
+
+		Fallback Off
 }
-
-
