@@ -34,8 +34,9 @@ public class RythmTable : Movable
 
     public void changeTempo(float tempo)
     {
-		if (active) {
-			_tempo = tempo;
+        _tempo = tempo;
+
+        if (active) {
 			CancelInvoke ();
 			InvokeRepeating ("tempo", _tempo, _tempo);
 		}
