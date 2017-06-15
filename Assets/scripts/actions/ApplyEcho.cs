@@ -9,7 +9,7 @@ public class ApplyEcho : Actions {
 	void Start () { Reset(); }
 
 	public void Reset() {
-		cursor.GetComponent<Movable> ().Reset ();
+		cursor.GetComponent<MoveRotator> ().Reset ();
 		slider.GetComponent<Movable> ().Reset ();
 
 		cursor.GetComponent<Movable> ().Locked (true);
