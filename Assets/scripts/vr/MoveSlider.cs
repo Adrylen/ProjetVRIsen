@@ -6,16 +6,11 @@ public class MoveSlider : Movable {
 	private Vector3 origin;
 	private float max = 0.5f;
 	private float min = -0.5f;
-	private bool locked = false;
 
 	public bool xAxis = false;
 
 	void Start() {
 		origin = transform.localPosition;
-	}
-
-	public void Locked(bool locked) {
-		this.locked = locked;
 	}
 
 	public override void Movement(GameObject controller) {

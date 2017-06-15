@@ -8,8 +8,11 @@ public class PlayAudio : Actions {
 	public override void LaunchAction (bool isActive)
 	{
 		if (isActive) {
-            if(launched) {
+			if(launched) {
                 audioSource.UnPause();
+				if (!audioSource.isPlaying) {
+					audioSource.Play ();
+				}
             } else {
                 audioSource.Play();
                 launched = true;
