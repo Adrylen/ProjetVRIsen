@@ -20,10 +20,10 @@ public class ApplyChorus : Actions {
 		optCube.GetComponent<Movable> ().Locked (true);
 
         audioSource.GetComponent<AudioChorusFilter>().dryMix=1.0F;
+		audioSource.GetComponent<AudioHighPassFilter> ().cutoffFrequency = 10.0f;
+		audioSource.GetComponent<AudioLowPassFilter> ().cutoffFrequency = 22000.0f;
 
-        audioSource.GetComponent<AudioChorusFilter> ().delay
-			= audioSource.GetComponent<AudioChorusFilter> ().depth
-			= audioSource.GetComponent<AudioChorusFilter> ().rate
+		audioSource.GetComponent<AudioChorusFilter> ().depth
 			= audioSource.GetComponent<AudioChorusFilter> ().wetMix1
 			= audioSource.GetComponent<AudioChorusFilter> ().wetMix2
 			= audioSource.GetComponent<AudioChorusFilter> ().wetMix3
