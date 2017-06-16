@@ -28,7 +28,6 @@ public class CubeTrail : MonoBehaviour {
 
 	void Update() {
 		if (!head.transform.position.Equals (trail [trail.Length - 1].transform.position)) {
-			Debug.Log ("OK");
 			for (int i = trail.Length - 1; i > 0; --i) {
 				trail [i].transform.position = trail [i-1].transform.position;
 			}

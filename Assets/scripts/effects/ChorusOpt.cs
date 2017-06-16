@@ -9,8 +9,8 @@ public class ChorusOpt : Effect {
 	}
 
 	public override void ApplyEffect(float x, float y, float z) {
-		audioSource.GetComponent<AudioLowPassFilter> ().cutoffFrequency = x < 0.02f ? 10.0f : x * 500.0f;
-		audioSource.GetComponent<AudioHighPassFilter> ().cutoffFrequency = (1-y) * 20000.0f + 2000.0f;
-		audioSource.GetComponent<AudioChorusFilter> ().depth = z * 0.3f;
+        audioSource.GetComponent<AudioLowPassFilter>().cutoffFrequency = (1 - x) * 20000.0f + 2000.0f;      //x 
+        audioSource.GetComponent<AudioHighPassFilter> ().cutoffFrequency = y < 0.02f ? 10.0f : y * 500.0f;  //y
+		audioSource.GetComponent<AudioChorusFilter> ().depth = z * 0.3f;                                    //z
 	}
 }

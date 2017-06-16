@@ -40,6 +40,11 @@ public class CDCharger : MonoBehaviour
             
             //Debug.Log("collision");
 			if (other.GetComponent<CD> () != null && !other.GetComponent<CD>().IsPlaced() && other. GetComponent<CD>().fileName!=actualFileName) {
+                // Eject previous CD
+                if(GetComponentInChildren<CD>() != null) {
+                    GetComponentInChildren<CD>().Movement(null);
+                }
+                
                 // Place the CD
                 CD cd = other.GetComponent<CD>();
                 cd.SetPlaced(true);
