@@ -14,6 +14,10 @@ public class StockSound : Movable {
     }
 
 
+	void OnTriggerEnter(Collider other) {
+		GetComponent<AudioSource> ().Stop ();
+		GetComponent<AudioSource> ().PlayOneShot (LoadResources.audioFiles[filename]);
+	}
 
     public override void Movement(GameObject controller)
     {
