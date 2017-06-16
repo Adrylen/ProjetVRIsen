@@ -19,6 +19,10 @@ public class StockSound : Movable {
 		GetComponent<AudioSource> ().PlayOneShot (LoadResources.audioFiles[filename]);
 	}
 
+	void OnTriggerExit(Collider other){
+		GetComponent<AudioSource> ().Stop ();
+	}
+
     public override void Movement(GameObject controller)
     {
         controller.GetComponent<ControllerCD>().filename = filename;
