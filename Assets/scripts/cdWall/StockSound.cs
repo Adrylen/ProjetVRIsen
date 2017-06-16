@@ -15,12 +15,19 @@ public class StockSound : Movable {
 
 
 	void OnTriggerEnter(Collider other) {
-		GetComponent<AudioSource> ().Stop ();
-		GetComponent<AudioSource> ().PlayOneShot (LoadResources.audioFiles[filename]);
+        InvokeRepeating("PreListening", 0.15f, 0f);
 	}
 
+    void PreListening()
+    {
+        CancelInvoke();
+        GetComponent<AudioSource>().Stop();
+        GetComponent<AudioSource>().PlayOneShot(LoadResources.soundFiles[filename]);
+    }
+
 	void OnTriggerExit(Collider other){
-		GetComponent<AudioSource> ().Stop ();
+        //GetComponent<AudioSource> ().Stop ();
+        CancelInvoke();
 	}
 
     public override void Movement(GameObject controller)
