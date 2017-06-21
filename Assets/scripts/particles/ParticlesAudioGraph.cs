@@ -14,11 +14,13 @@ public class ParticlesAudioGraph : MonoBehaviour
     public float particleSize;
     private float[] spectrumDecomposition;
     public AudioSource sourceAudio;
-
+    Gradient colorGradient;
 
     // Use this for initialization
     void Start()
     {
+        colorGradient = new Gradient();
+        colorGradientAssigner(ref colorGradient);
         aParticleSystem = gameObject.GetComponent<ParticleSystem>();
         particlesArray = new ParticleSystem.Particle[screenX * screenY];
         aParticleSystem.GetParticles(particlesArray);
@@ -55,15 +57,12 @@ public class ParticlesAudioGraph : MonoBehaviour
     void switchOnColumn(int column, int value, ParticleSystem.Particle[] aParticlesArray)
     {
         int i, j;
+        float tempColor;
         j = column;
-        float test;
         for (i = 0; i<value;i++)
         {
-            test = screenY - i;
-            float rValue = 1 - test / 22;
-            if (test > 20) { rValue = 0.5F + (float)test / 150; }
-            float vValue = test / 22;
-            changeParticleColor(ref aParticlesArray[j*screenY+i], new Color(rValue, vValue, 1));
+            tempColor = (float) i / (screenY-1);
+            changeParticleColor(ref aParticlesArray[j * screenY + i], colorGradient.Evaluate(tempColor));
         }
     }
 
@@ -112,6 +111,32 @@ public class ParticlesAudioGraph : MonoBehaviour
         }
     }
 
+    Gradient colorGradientAssigner(ref Gradient aColorGradient)
+    {
+        GradientAlphaKey[] gak = new GradientAlphaKey[3];
+        GradientColorKey[] gck = new GradientColorKey[3];
+
+        gck[0].color = Color.magenta;
+        gck[0].time = 0.0F;
+        gak[0].alpha = 1.0F;
+        gak[0].time = 0.0F;
+
+
+        gck[1].color = new Color((float)75 / 255, (float)192 / 255, (float)200 / 255);
+        gck[1].time = 0.45F;
+        gak[1].alpha = 1.0F;
+        gak[1].time = 0.45F;
+
+
+        gck[2].color = Color.white;
+        gck[2].time = 1;
+        gak[2].alpha = 1.0F;
+        gak[2].time = 1F;
+
+
+        aColorGradient.SetKeys(gck, gak);
+        return aColorGradient; 
+    }
 
 }
 
