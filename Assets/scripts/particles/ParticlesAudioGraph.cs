@@ -28,7 +28,7 @@ public class ParticlesAudioGraph : MonoBehaviour
             for (int j = 0; j < screenY; j++)
             {
                 particlesArray[i * screenY + j] = new ParticleSystem.Particle();
-                particlesArray[i * screenY + j].position = new Vector3(i * spacing, j * spacing, 1);
+                particlesArray[i * screenY + j].position = new Vector3(i * spacing * transform.parent.localScale.x, j * spacing, 0);
                 particlesArray[i * screenY + j].startSize = particleSize;
                 changeParticleColor(ref particlesArray[i * screenY + j], Color.black);
             }
@@ -93,7 +93,7 @@ public class ParticlesAudioGraph : MonoBehaviour
 
     void barGraph(ParticleSystem.Particle[] aParticlesArray)
     {
-        spectrumDecomposition = fft.makeFft(numberOfDecomposition, numberOfFrequencies);
+        spectrumDecomposition = fft.makeFft(numberOfDecomposition, numberOfFrequencies, sourceAudio);
         particleFall(aParticlesArray);
         for (int i = 0; i < numberOfDecomposition; i++)
         {
@@ -102,7 +102,7 @@ public class ParticlesAudioGraph : MonoBehaviour
             {
                 spectrumValue = 31f;
             }
-            int width = 182 / numberOfDecomposition;
+            int width = screenX / numberOfDecomposition;
             int valeur = i * (width);
             for (int j = valeur; j < valeur + width; j++)
             {

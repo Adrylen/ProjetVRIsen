@@ -37,8 +37,8 @@ public class SeaOfParticles : MonoBehaviour {
 
     void Update()
     {
-		NoiseWave ();
-		//SoundWave ();
+		//NoiseWave ();
+		SoundWave ();
     }
 
 	public void SoundWave() {
