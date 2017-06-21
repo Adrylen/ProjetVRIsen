@@ -33,8 +33,9 @@ public class CDWall : MonoBehaviour {
 
         for (int i = 0; i< LoadResources.soundNames.Length; i++)
         {
-            if (yPos == 9) { xPos++; }
+            xPos = i / 10;
             yPos = i % 10;
+
             position = new Vector3((float)xPos * 1.5F,(float)yPos*1.5F, 0);
             temp = (GameObject)Instantiate(templateCube, position, Quaternion.identity,parentCube.transform);
 			temp.GetComponentInChildren<TextMesh>().text = LoadResources.soundNames[i];
@@ -45,6 +46,7 @@ public class CDWall : MonoBehaviour {
             temp.GetComponent<StockSound>().boxMaterial = tempColor;
         }
 
+        parentCube.transform.name = "Sound Library";
         parentCube.transform.parent = gameObject.transform;
         parentCube.transform.rotation = gameObject.transform.rotation;
         parentCube.transform.position = gameObject.transform.position;
