@@ -21,12 +21,10 @@ public class DrumLoadFromController : Movable {
 		if(controller.GetComponent<ControllerCD>().filename == "")
 		{
 			filename = "";
-			boxColor = Color.white;
-			gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.white);
-			gameObject.GetComponent<AudioSource>().Stop();
 		}
 		if (filename != controller.GetComponent<ControllerCD>().filename)
 		{
+            GetComponent<PlaySoundOnCollision>().filename = controller.GetComponent<ControllerCD>().filename;
 			filename = controller.GetComponent<ControllerCD>().filename;
 			boxMaterial = controller.GetComponent<ControllerCD>().boxMaterial;
 			boxColor = boxMaterial.material.color;
