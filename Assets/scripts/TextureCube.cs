@@ -14,8 +14,6 @@ public class TextureCube : MonoBehaviour {
 
 		Vector2[] uvs = new Vector2[mesh.vertices.Length];
 
-		Debug.Log (mesh.vertices);
-
 		#region Front
 		uvs[0]  = new Vector2(  0.0f,0.5f);	// Bottom	Left
 		uvs[1]  = new Vector2(0.333f,0.5f);	// Bottom	Right
