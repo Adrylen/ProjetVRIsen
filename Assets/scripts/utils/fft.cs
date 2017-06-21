@@ -14,9 +14,9 @@ public class fft : MonoBehaviour{
 
 		// Spectrum Source
 		if (audioSource == null) {
-			AudioListener.GetSpectrumData(spectrum, 0, FFTWindow.Rectangular);
+			AudioListener.GetSpectrumData(spectrum, 0, FFTWindow.Hamming);
 		} else {
-			audioSource.GetSpectrumData (spectrum, 0, FFTWindow.Rectangular);
+			audioSource.GetSpectrumData (spectrum, 0, FFTWindow.Hamming);
 		}
 
 		// Decomposition
