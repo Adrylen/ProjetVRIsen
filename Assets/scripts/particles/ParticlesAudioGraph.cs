@@ -11,6 +11,7 @@ public class ParticlesAudioGraph : MonoBehaviour
     public float spacing = 0.2F;
     public int numberOfFrequencies;
     public int numberOfDecomposition;
+    public float particleSize;
     private float[] spectrumDecomposition;
     public AudioSource sourceAudio;
 
@@ -28,7 +29,7 @@ public class ParticlesAudioGraph : MonoBehaviour
             {
                 particlesArray[i * screenY + j] = new ParticleSystem.Particle();
                 particlesArray[i * screenY + j].position = new Vector3(i * spacing, j * spacing, 1);
-                particlesArray[i * screenY + j].startSize = 1F;
+                particlesArray[i * screenY + j].startSize = particleSize;
                 changeParticleColor(ref particlesArray[i * screenY + j], Color.black);
             }
         }
@@ -77,7 +78,7 @@ public class ParticlesAudioGraph : MonoBehaviour
             {
                 if (aParticlesArray[i * screenY + j].startColor != Color.black)
                 {
-                    tempColor = aParticlesArray[i * screenY + j].startColor;
+                    tempColor = aParticlesArray[i * screenY + j -1].startColor;
                     aParticlesArray[i * screenY + j].startColor = Color.black;
                     aParticlesArray[i * screenY + j -1].startColor = tempColor;
                     if (i < screenX-1) { i++; j = screenY-1; }
