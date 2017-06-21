@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class PlaySoundOnCollision : MonoBehaviour
 {
-    public AudioSource sound;
+    private AudioSource sound;
+
+	public string filename;
     // Use this for initialization
     void Start()
     {
@@ -19,8 +21,8 @@ public class PlaySoundOnCollision : MonoBehaviour
         
         if (test.gameObject.CompareTag("Pickable"))
         {
-            sound.Play();
-            SteamVR_Controller.Input((int)controller.controllerIndex).TriggerHapticPulse((ushort)3999);
+			sound.PlayOneShot (LoadResources.soundFiles [filename]);
+			SteamVR_Controller.Input((int)controller.controllerIndex).TriggerHapticPulse((ushort)3999);
         }
     }
 }
