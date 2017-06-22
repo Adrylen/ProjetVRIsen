@@ -28,13 +28,13 @@ public class CDWall : MonoBehaviour {
         Renderer tempColor;
         int[] tempArray;
         Vector3 position;
-        int xPos=0, yPos=0;
+        float xPos=0, yPos=0;
         
 
         for (int i = 0; i< LoadResources.soundNames.Length; i++)
         {
             xPos = i / 10;
-            yPos = i % 10;
+            yPos = (i % 10) + 0.1f;
 
             position = new Vector3((float)xPos * 1.5F,(float)yPos*1.5F, 0);
             temp = (GameObject)Instantiate(templateCube, position, Quaternion.identity,parentCube.transform);

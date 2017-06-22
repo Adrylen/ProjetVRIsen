@@ -13,7 +13,6 @@ public class DrumStick : Movable {
 
     public override void enterInput(Object controller)
     {
-        Debug.Log("OK");
         gameObject.tag = "DrumStick";
     }
 

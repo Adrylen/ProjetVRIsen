@@ -11,8 +11,8 @@ public class DrumLoadFromController : Movable {
 
 	void Start()
 	{
-		boxMaterial = gameObject.GetComponent<Renderer>();
-		boxColor = boxMaterial.material.color;
+		//boxMaterial = gameObject.GetComponent<Renderer>();
+		//boxColor = boxMaterial.material.color;
 	}
 
 
@@ -26,11 +26,11 @@ public class DrumLoadFromController : Movable {
 		{
             GetComponent<PlaySoundOnCollision>().filename = controller.GetComponent<ControllerCD>().filename;
 			filename = controller.GetComponent<ControllerCD>().filename;
-			boxMaterial = controller.GetComponent<ControllerCD>().boxMaterial;
-			boxColor = boxMaterial.material.color;
-			gameObject.GetComponent<Renderer>().material.SetColor("_Color", boxMaterial.material.color);
-		}
+            //boxMaterial = controller.GetComponent<ControllerCD>().boxMaterial;
+            boxColor = controller.GetComponent<ControllerCD>().boxMaterial.material.color;
+            gameObject.GetComponent<Renderer>().material.SetColor("_Color", boxColor);
+        }
 
-	}
+    }
 
 }
