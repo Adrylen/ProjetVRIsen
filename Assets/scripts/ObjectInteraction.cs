@@ -7,14 +7,16 @@ public class ObjectInteraction : MonoBehaviour
 	private SteamVR_TrackedController controller;
 	private GameObject target = null;
     private bool isClicked = false;
+
+    public static Shader standardShader;
+    public static Shader outlinedShader;
+
     public int pulsation = 900;
-    private Shader shader1;
-    private Shader shader2;
 
     void OnEnable() {
 		controller = GetComponent<SteamVR_TrackedController>();
-        shader1 = Shader.Find("Standard");
-        shader2 = Shader.Find("Outlined/Silhouetted Bumped Diffuse");
+        standardShader = Shader.Find("Standard");
+        outlinedShader = Shader.Find("Outlined/Silhouetted Bumped Diffuse");
     }
 
 	void Update() {
@@ -56,7 +58,7 @@ public class ObjectInteraction : MonoBehaviour
             Renderer rend = other.GetComponent<Renderer>();
             if (rend != null)
             {
-                rend.material.shader = shader2;
+                rend.material.shader = outlinedShader;
             }
             SteamVR_Controller.Input((int)controller.controllerIndex).TriggerHapticPulse((ushort)pulsation);
             target = other.gameObject;
@@ -78,7 +80,7 @@ public class ObjectInteraction : MonoBehaviour
             Renderer rend = other.GetComponent<Renderer>();
             if (rend != null)
             {
-                rend.material.shader = shader1;
+                rend.material.shader = standardShader;
             }
             if (target.GetComponent<Movable>() != null)
             {

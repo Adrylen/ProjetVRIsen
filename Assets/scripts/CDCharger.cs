@@ -24,8 +24,8 @@ public class CDCharger : MonoBehaviour
     }
 
 	private void ResetButtons() {
-		playControl.GetComponent<MovableButton>().Reset();
-		loopControl.GetComponent<MovableButton>().Reset();
+		playControl.GetComponent<MovableButton>().ResetButton();
+		loopControl.GetComponent<MovableButton>().ResetButton();
 		playControl.GetComponent<PlayAudio>().launched = false;
 		loopControl.GetComponent<LoopAction>().audioSource.loop = false;
 	}
@@ -49,6 +49,9 @@ public class CDCharger : MonoBehaviour
                 CD cd = other.GetComponent<CD>();
                 cd.SetPlaced(true);
 				cd.transform.parent = this.gameObject.transform;
+
+                //Put the correct shader
+                cd.GetComponent<Renderer>().material.shader = Shader.Find("Standard");
 
                 // Transform of CD
                 cd.transform.position = transform.position;

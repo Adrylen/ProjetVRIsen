@@ -5,23 +5,17 @@ using UnityEngine;
 public class SeaOfParticles : MonoBehaviour {
 	
 	private ParticleSystem.Particle[] particlesArray;
+	private Gradient colorGradient;
 	private float perlinNoiseAnimX = 0.01f;
 	private float perlinNoiseAnimY = 0.01f;
 	private float[] pointsArrays;
-
-	public ParticleSystem particleSystem;
-	public Gradient colorGradient;
-
-	[Range(0.0f, 1.0f)]
-	public float moveX = 1.0f;
-	[Range(0.0f, 1.0f)]
-	public float moveY = 1.0f;
 
     public int seaResolution = 100;
     public float spacing = 0.25f;
     public float noiseScale = 0.2f;
     public float fftScale = 1.2f;
     public float heightScale = 3f;
+    public float particleSize = 0.5f;
 
     void Start()
     {
@@ -29,19 +23,14 @@ public class SeaOfParticles : MonoBehaviour {
         particlesArray = new ParticleSystem.Particle[seaResolution * seaResolution];
 		// FFT points
 		pointsArrays = new float[seaResolution * seaResolution];
+		// Scripted gradient
+		colorGradient = GenerateGradient();
 
-        particleSystem.maxParticles = seaResolution * seaResolution;
-        particleSystem.Emit(seaResolution * seaResolution);
-        particleSystem.GetParticles(particlesArray);
+        GetComponent<ParticleSystem>().Emit(seaResolution * seaResolution);
+		GetComponent<ParticleSystem>().GetParticles(particlesArray);
     }
 
-    void Update()
-    {
-		//NoiseWave ();
-		SoundWave ();
-    }
-
-	public void SoundWave() {
+	void Update() {
 		float[] points = fft.makeFft (seaResolution, 512);
 		float[] old_line = new float[seaResolution];
 
@@ -55,32 +44,31 @@ public class SeaOfParticles : MonoBehaviour {
 					pointsArrays [i * seaResolution + j] = old_line [j];
 					old_line [j] = swap;
 				}
-				particlesArray[i * seaResolution + j].color = colorGradient.Evaluate(pointsArrays[i * seaResolution + j]);
+				particlesArray[i * seaResolution + j].startColor = colorGradient.Evaluate(pointsArrays[i * seaResolution + j]);
 				particlesArray[i * seaResolution + j].position = new Vector3(i * spacing, pointsArrays[i * seaResolution + j] * heightScale, j * spacing);
-			}
+                particlesArray[i * seaResolution + j].startSize = particleSize;
+            }
 		}
 		perlinNoiseAnimX += 0.01f;
-		particleSystem.SetParticles(particlesArray, particlesArray.Length);
+		GetComponent<ParticleSystem>().SetParticles(particlesArray, particlesArray.Length);
 	}
 
-	public void NoiseWave() {
-		for (int i = 0; i < seaResolution; i++)
-		{
-			for (int j = 0; j < seaResolution; j++)
-			{
-				float zPos = Mathf.PerlinNoise(i * noiseScale + perlinNoiseAnimX, j * noiseScale + perlinNoiseAnimY);
+	private Gradient GenerateGradient() {
+		Gradient g = new Gradient ();
 
-				particlesArray[i * seaResolution + j].color = colorGradient.Evaluate(zPos);
-
-				particlesArray[i * seaResolution + j].position = new Vector3(i * spacing, zPos * heightScale, j * spacing);
+		g.SetKeys (
+			new GradientColorKey[]{
+				new GradientColorKey(Color.cyan, 0.0f),
+				new GradientColorKey(Color.green, 0.5f),
+				new GradientColorKey(Color.magenta, 1.0f)
+			},
+			new GradientAlphaKey[]{
+				new GradientAlphaKey(1.0f, 0.0f),
+				new GradientAlphaKey(1.0f, 0.5f),
+				new GradientAlphaKey(1.0f, 1.0f)
 			}
-		}
+		);
 
-		// Movement
-		perlinNoiseAnimX += 0.01f * moveX;
-		perlinNoiseAnimY += 0.01f * moveY;
-
-		// Apply Particules
-		particleSystem.SetParticles(particlesArray, particlesArray.Length);
+		return g; 
 	}
 }

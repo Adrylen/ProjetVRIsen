@@ -16,6 +16,12 @@ public class CD : Movable
         origin = gameObject.transform;
     }
 
+    void LateUpdate() {
+        if(placed && GetComponent<Renderer>().material.shader == ObjectInteraction.outlinedShader) {
+            GetComponent<Renderer>().material.shader = ObjectInteraction.standardShader;
+        }
+    }
+
     public bool IsPlaced()
     {
         return placed;
@@ -56,6 +62,7 @@ public class CD : Movable
     {
         if (!placed)
         {
+            //GetComponent<Renderer>().material.shader = ObjectInteraction.standardShader;
             transform.parent = parent.transform;
             transform.localPosition = origin_position;
             transform.localRotation = Quaternion.identity;
@@ -66,6 +73,7 @@ public class CD : Movable
     public override void Movement(GameObject controller)
     {
         if(placed) {
+            //GetComponent<Renderer>().material.shader = ObjectInteraction.standardShader;
             transform.parent = parent.transform;
             transform.localPosition = origin_position;
             transform.localRotation = Quaternion.identity;
