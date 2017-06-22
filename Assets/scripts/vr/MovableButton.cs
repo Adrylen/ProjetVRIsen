@@ -21,7 +21,7 @@ public class MovableButton : Movable {
 		origin = transform.localPosition;
 	}
 
-    public void Reset()
+    public void ResetButton()
     {
         isActive = false;
         transform.localScale = new Vector3(transform.localScale.x, base_scale_y, transform.localScale.z);
