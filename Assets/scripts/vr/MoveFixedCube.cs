@@ -7,7 +7,7 @@ public class MoveFixedCube : Movable {
 
 	public bool invertXAxis;
 
-	void Start() { Reset (); }
+	void Start() { ResetButton (); }
 
 	public void ResetButton () {
 		transform.localPosition = new Vector3 (
