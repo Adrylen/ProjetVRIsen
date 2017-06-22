@@ -20,7 +20,7 @@ public class ObjectInteraction : MonoBehaviour
 	void Update() {
         if (controller.gripped)
         {
-            if(controller.transform.childCount>1)
+			if(controller.transform.childCount>1 && controller.transform.GetChild(1).GetComponent<DrumStick>() == null)
             {
                 controller.GetComponent<ControllerCD>().Reset();
                 Destroy(controller.transform.GetChild(1).gameObject);
