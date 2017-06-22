@@ -46,7 +46,7 @@ public class DrumStick : Movable {
     //}
 
     public override void Movement(GameObject controller) {
-        if (active && controller.transform.childCount==0)
+        if (active)
         {
             rBody.velocity = Vector3.zero;
             rBody.freezeRotation = true;

@@ -15,6 +15,7 @@ public class SeaOfParticles : MonoBehaviour {
     public float noiseScale = 0.2f;
     public float fftScale = 1.2f;
     public float heightScale = 3f;
+    public float particleSize = 0.5f;
 
     void Start()
     {
@@ -25,7 +26,7 @@ public class SeaOfParticles : MonoBehaviour {
 		// Scripted gradient
 		colorGradient = GenerateGradient();
 
-		GetComponent<ParticleSystem>().Emit(seaResolution * seaResolution);
+        GetComponent<ParticleSystem>().Emit(seaResolution * seaResolution);
 		GetComponent<ParticleSystem>().GetParticles(particlesArray);
     }
 
@@ -45,7 +46,8 @@ public class SeaOfParticles : MonoBehaviour {
 				}
 				particlesArray[i * seaResolution + j].startColor = colorGradient.Evaluate(pointsArrays[i * seaResolution + j]);
 				particlesArray[i * seaResolution + j].position = new Vector3(i * spacing, pointsArrays[i * seaResolution + j] * heightScale, j * spacing);
-			}
+                particlesArray[i * seaResolution + j].startSize = particleSize;
+            }
 		}
 		perlinNoiseAnimX += 0.01f;
 		GetComponent<ParticleSystem>().SetParticles(particlesArray, particlesArray.Length);
