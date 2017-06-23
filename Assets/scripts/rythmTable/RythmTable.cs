@@ -105,7 +105,7 @@ public class RythmTable : Movable
         GameObject temp = new GameObject();
         Vector3 tempPosition;
 
-        float xPos, yPos;
+        float yPos = 0;
 
         List<GameObject> newList1 = new List<GameObject>();
         List<GameObject> newList2 = new List<GameObject>();
@@ -122,9 +122,6 @@ public class RythmTable : Movable
         aRythmBox.Add(newList2);
         aRythmBox.Add(newList3);
 
-        yPos = 0;
-        xPos = 0;
-
         // Cube filling
 
         foreach (List<GameObject> element in aRythmBox)
@@ -135,7 +132,6 @@ public class RythmTable : Movable
                 element.Add((GameObject)Instantiate(templateCube, tempPosition, Quaternion.identity, temp.transform));
             }
             yPos -= (space+1);
-            xPos = gameObject.transform.localPosition.x;
         }
 
         // Rotation adaptation
