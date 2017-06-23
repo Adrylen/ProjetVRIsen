@@ -39,6 +39,7 @@ public class CD : Movable
 
     public CD SetFileName(string fileName) {
         this.fileName = fileName;
+		transform.GetChild (0).GetComponent<TextMesh>().text = fileName;
         return this;
     }
 
