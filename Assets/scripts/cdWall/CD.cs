@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class CD : Movable
 {
-    private Transform origin;
     private bool placed = false;
 
     public GameObject parent;
@@ -12,9 +11,7 @@ public class CD : Movable
     public Vector3 origin_scale;
     public string fileName;
 
-	void Start() {
-        origin = gameObject.transform;
-    }
+	void Start() {}
 
     void LateUpdate() {
         if(placed && GetComponent<Renderer>().material.shader == ObjectInteraction.outlinedShader) {
