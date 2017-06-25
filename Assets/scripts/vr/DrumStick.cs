@@ -5,11 +5,20 @@ using UnityEngine;
 public class DrumStick : Movable {
     private Rigidbody rBody;
     private bool active;
+	private Vector3 origin_position;
+
     void Start()
     {
         active = false;
         rBody = GetComponent<Rigidbody>();
+		origin_position = transform.localPosition;
     }
+
+	void LateUpdate() {
+		if (transform.localPosition.y < -5.0f) {
+			transform.localPosition = origin_position;
+		}
+	}
 
     public override void enterInput(Object controller)
     {
