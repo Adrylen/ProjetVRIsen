@@ -47,12 +47,15 @@ public class ParticlesAudioGraph : MonoBehaviour
     {
         barGraph(particlesArray);
         aParticleSystem.SetParticles(particlesArray, particlesArray.Length);
+       
     }
 
     void changeParticleColor (ref ParticleSystem.Particle aParticle, Color aColor)
     {
         aParticle.startColor = aColor;
     }
+
+
 
     void switchOnColumn(int column, int value, ParticleSystem.Particle[] aParticlesArray)
     {
