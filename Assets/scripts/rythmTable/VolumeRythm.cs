@@ -22,8 +22,8 @@ public class VolumeRythm : Effect
         if (value != -1) { actualValue = value; }
         foreach (List<GameObject> liste in aRythmBox)
         {
-            for(int i=0; i<aRythmBox.nbElementPerLine;i++)
-            liste[i].GetComponent<AudioSource>().volume = actualValue * faderValue;
+            for (int i = 0; i < aRythmBox.nbElementPerLine; i++)
+                liste[i].GetComponent<AudioSource>().volume = 0.5F + gameObject.transform.localPosition.z;
         }
 
     }
