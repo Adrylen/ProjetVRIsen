@@ -12,6 +12,7 @@ public class Fireworks : MonoBehaviour {
     public AudioSource sourceAudio;
     private int numberOfFireworks = 6;
     public Gradient multicolorGradient;
+    public Gradient subGradient;
     private System.Random rnd;
     private float spectrumValue;
     private int count = 0;
@@ -50,12 +51,12 @@ public class Fireworks : MonoBehaviour {
 
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
         
         
         spectrumValue = 0;
-        spectrumDecomposition = fft.makeFft(numberOfDecomposition, numberOfFrequencies , sourceAudio);
+        spectrumDecomposition = fft.makeFft(numberOfDecomposition, numberOfFrequencies);
         for (int i = 0; i < numberOfDecomposition; i++)
         {
             spectrumValue += spectrumDecomposition[i] / 1.8F;
@@ -68,7 +69,7 @@ public class Fireworks : MonoBehaviour {
             changeFireworksParameter(ref test, spectrumValue);
         }
 
-        if (spectrumValue > 0.2)
+        if (spectrumValue > 0.2 && count > 100 || spectrumValue > 0.5 && count > 15)
         {
             rnd = new System.Random();
             int t = rnd.Next(1, 6);
@@ -97,7 +98,7 @@ public class Fireworks : MonoBehaviour {
             
             for(int j=0; j<fire.transform.childCount; j++)
             {
-                    fire.transform.GetChild(j).GetComponent<ParticleSystem>().startColor = multicolorGradient.Evaluate(param);
+                    fire.transform.GetChild(j).GetComponent<ParticleSystem>().startColor = subGradient.Evaluate(param);
             }
         }
 

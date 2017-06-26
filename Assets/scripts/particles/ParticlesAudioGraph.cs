@@ -43,7 +43,7 @@ public class ParticlesAudioGraph : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
         barGraph(particlesArray);
         aParticleSystem.SetParticles(particlesArray, particlesArray.Length);

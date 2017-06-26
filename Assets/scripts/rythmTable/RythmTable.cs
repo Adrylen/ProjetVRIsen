@@ -5,7 +5,7 @@ using UnityEngine;
 public class RythmTable : Movable
 {
 
-    private CustomArrayList test = new CustomArrayList();
+    public CustomArrayList test = new CustomArrayList();
     public GameObject templateCube;
     public GameObject InteractionButton;
     private Transform buttonTransform;

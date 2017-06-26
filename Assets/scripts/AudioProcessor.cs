@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class AudioProcessor : MonoBehaviour
 {
     //public AudioClip song;
-    public AudioSource song;
+    //public AudioSource song;
     //public GameObject cube;
     private bool Beated;
     private float[] historyBuffer = new float[43];
@@ -37,7 +37,7 @@ public class AudioProcessor : MonoBehaviour
         //channelLeft = song.GetSpectrumData (1024, 2, FFTWindow.Hamming);  //Rafa
 
         //InstantSpec = sumStereo (channelLeft, channelRight);  //Normal
-        InstantSpec = sumStereo2(song.GetSpectrumData(SamplesSize, 0, FFTWindow.Hamming));  //Rafa
+        InstantSpec = sumStereo2(AudioListener.GetSpectrumData(SamplesSize, 0, FFTWindow.Hamming));  //Rafa
 
         //compute local average sound evergy
         //AverageSpec = sumLocalEnergy ()/historyBuffer.Length; // E being the average local sound energy  //Normal
