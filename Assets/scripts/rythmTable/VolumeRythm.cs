@@ -2,22 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Volume : Effect {
+public class VolumeRythm : Effect
+{
     private float initValue = 0.5f;
 
     public float actualValue { get; set; }
     public float faderValue { get; set; }
-
+    private CustomArrayList aRythmBox;
+    public GameObject rythmObject;
     void Start()
     {
         actualValue = initValue;
-        audioSource.volume = initValue * faderValue;
         transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, transform.localPosition.z + (initValue - 0.5f));
     }
 
     public override void ApplyEffect(float value)
     {
+        aRythmBox = rythmObject.GetComponent<RythmTable>().test;
         if (value != -1) { actualValue = value; }
-        audioSource.volume = actualValue * faderValue;
+        foreach (List<GameObject> liste in aRythmBox)
+        {
+            for (int i = 0; i < aRythmBox.nbElementPerLine; i++)
+                liste[i].GetComponent<AudioSource>().volume = 0.5F + gameObject.transform.localPosition.z;
+        }
+
     }
 }

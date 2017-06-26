@@ -43,16 +43,19 @@ public class ParticlesAudioGraph : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
         barGraph(particlesArray);
         aParticleSystem.SetParticles(particlesArray, particlesArray.Length);
+       
     }
 
     void changeParticleColor (ref ParticleSystem.Particle aParticle, Color aColor)
     {
         aParticle.startColor = aColor;
     }
+
+
 
     void switchOnColumn(int column, int value, ParticleSystem.Particle[] aParticlesArray)
     {

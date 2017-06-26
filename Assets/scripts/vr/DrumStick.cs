@@ -15,8 +15,8 @@ public class DrumStick : Movable {
     }
 
 	void LateUpdate() {
-		if (transform.localPosition.y < -5.0f) {
-			transform.localPosition = origin_position;
+		if (transform.localPosition.y < -15.0f) {
+			transform.localPosition = new Vector3(5.3F,2.2F,-1.5F);
 		}
 	}
 

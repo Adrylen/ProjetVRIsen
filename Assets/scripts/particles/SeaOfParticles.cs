@@ -30,7 +30,7 @@ public class SeaOfParticles : MonoBehaviour {
 		GetComponent<ParticleSystem>().GetParticles(particlesArray);
     }
 
-	void Update() {
+	void LateUpdate() {
 		float[] points = fft.makeFft (seaResolution, 512);
 		float[] old_line = new float[seaResolution];
 
