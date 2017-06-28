@@ -13,6 +13,8 @@ public class ObjectInteraction : MonoBehaviour
 
     public int pulsation = 900;
 
+
+
     void OnEnable() {
 		controller = GetComponent<SteamVR_TrackedController>();
         standardShader = Shader.Find("Standard");
