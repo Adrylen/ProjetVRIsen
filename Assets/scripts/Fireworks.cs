@@ -10,12 +10,12 @@ public class Fireworks : MonoBehaviour {
     public int numberOfDecomposition;
     private float[] spectrumDecomposition;
     public AudioSource sourceAudio;
-    private int numberOfFireworks = 6;
     public Gradient multicolorGradient;
     public Gradient subGradient;
     private System.Random rnd;
     private float spectrumValue;
     private int count = 0;
+
 
     // Use this for initialization
     void Start () {
@@ -85,7 +85,6 @@ public class Fireworks : MonoBehaviour {
 
     void changeFireworksParameter (ref ParticleSystem aFirework, float value)
     {
-        ParticleSystem.MainModule subSettings;
         ParticleSystem fire;
         int subEmitterCount = aFirework.subEmitters.subEmittersCount;
         float param;
@@ -94,11 +93,14 @@ public class Fireworks : MonoBehaviour {
         {
             param = value;
             fire = aFirework.transform.GetChild(i).GetComponent<ParticleSystem>();
-            fire.startColor = multicolorGradient.Evaluate(param);
+
+			var main = fire.main;
+            main.startColor = multicolorGradient.Evaluate(param);
             
             for(int j=0; j<fire.transform.childCount; j++)
             {
-                    fire.transform.GetChild(j).GetComponent<ParticleSystem>().startColor = subGradient.Evaluate(param);
+				var tempMain = fire.transform.GetChild(j).GetComponent<ParticleSystem>().main;
+                tempMain.startColor = subGradient.Evaluate(param);
             }
         }
 

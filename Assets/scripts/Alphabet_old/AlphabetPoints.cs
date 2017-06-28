@@ -17,6 +17,7 @@ public class AlphabetPoints : MonoBehaviour {
 	private ParticleSystem.Particle[] particleArray = null;
 	private List<float> particleOffsetX = new List<float> ();
 	private List<float> particleOffsetY = new List<float> ();
+	private List<Vehicle_old> vehicles = new List<Vehicle_old>();
 	private char[] bottom_letters = {'g','j','p','q','y'};
 	private float[,] targetPositions;
 	private float acc;
@@ -67,21 +68,19 @@ public class AlphabetPoints : MonoBehaviour {
 	// Reset all particles and tools containers 
 	private void ResetParticleSystem() {
 		GetComponent<ParticleSystem> ().Clear ();
+		vehicles.Clear ();
 		targetPositions = new float[0,0];
 		particleArray = null;
 	}
 
 	private void DisplayParticles() {
-		DefineAcceleration();
-		if (Mathf.Abs (particleArray [0].position.x) != Mathf.Abs (targetPositions [0, 0])) {
-			for (int i = 0; i < particleArray.Length; ++i) {
-				particleArray [i].position = new Vector3 (
-					particleArray [i].position.x + targetPositions [0, i] * acc,
-					particleArray [i].position.y + targetPositions [1, i] * acc,
-					-0.05f
-				);
-			}
+		for (int i = 0; i < vehicles.Count; ++i) {
+			vehicles[i].Behaviors ();
+			vehicles[i].UpdatePosition ();
+			particleArray [i].position = vehicles [i].position;
+			Debug.Log (particleArray [i].position.x);
 		}
+
 		GetComponent<ParticleSystem> ().SetParticles (particleArray, particleArray.Length);
 	}
 
@@ -104,14 +103,13 @@ public class AlphabetPoints : MonoBehaviour {
 				particleArray [id].startSize = particleSize;
 				particleArray [id].startColor = Color.white;
 
-				particleArray [id].position = new Vector3 (
-					transform.localPosition.x,
-					transform.localPosition.y,
+				vehicles.Add(new Vehicle_old(new Vector3(
+					particleOffsetX [i] + particleScale * letters [l].points [j].x,
+					particleOffsetY [i] - particleScale * letters [l].points [j].y,
 					-0.05f
-				);
-
-				targetPositions [0, id] = particleOffsetX [i] + particleScale * letters [l].points [j].x;
-				targetPositions [1, id] = particleOffsetY [i] - particleScale * letters [l].points [j].y;
+				)));
+					
+				particleArray [id].position = vehicles[id].position;
 
 				id++;
 			}
@@ -135,6 +133,11 @@ public class AlphabetPoints : MonoBehaviour {
 				globalSize += SizeOfLetter(letters [id].points, X_VALUE);
 			}
 		}
+
+		Vehicle_old.minRange.x = 0.0f;
+		Vehicle_old.maxRange.x = globalSize;
+		Vehicle_old.minRange.y = 0.0f;
+		Vehicle_old.maxRange.y = 100.0f;
 		
 		float halfSize = globalSize / 2.0f;
 		float min = -1.0f;
@@ -163,7 +166,6 @@ public class AlphabetPoints : MonoBehaviour {
 				continue;
 			}
 			float offset = particleScale * MaxValue (letters [id].points, Y_VALUE) + particleHeight;
-			Debug.Log (offset);
 			foreach (char letter in bottom_letters) {
 				if (letter == c) {
 					offset -= 0.4f;
