@@ -5,13 +5,11 @@ using UnityEngine;
 public class DrumStick : Movable {
     private Rigidbody rBody;
     private bool active;
-	private Vector3 origin_position;
 
     void Start()
     {
         active = false;
         rBody = GetComponent<Rigidbody>();
-		origin_position = transform.localPosition;
     }
 
 	void LateUpdate() {
@@ -43,16 +41,6 @@ public class DrumStick : Movable {
 
     }
 
-    //public override void PadClicked()
-    //{
-    //   rBody.detectCollisions = false;
-    //}
-
-    //public override void PadReleased() {
-    //    Debug.Log("COUCOU");
-    //    rBody.detectCollisions = true;
-    //}
-
     public override void Movement(GameObject controller) {
         if (active)
         {
@@ -67,9 +55,7 @@ public class DrumStick : Movable {
     }
 
 
-    public bool isAlreadyGrabbed()
-    {
-        // return transform.parent.CompareTag("Controller");
+    public bool isAlreadyGrabbed() {
         return active;
     }
 }

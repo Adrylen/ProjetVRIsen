@@ -21,8 +21,8 @@ public class PlaySoundOnCollision : MonoBehaviour
         
         if (test.gameObject.CompareTag("Pickable"))
         {
-			sound.PlayOneShot (LoadResources.soundFiles [filename]);
-			SteamVR_Controller.Input((int)controller.controllerIndex).TriggerHapticPulse((ushort)3999);
+            sound.PlayOneShot(LoadResources.soundFiles[filename]);
+            SteamVR_Controller.Input((int)controller.controllerIndex).TriggerHapticPulse((ushort)3999);
         }
     }
 }
