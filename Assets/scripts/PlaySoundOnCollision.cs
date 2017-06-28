@@ -5,13 +5,16 @@ using UnityEngine;
 public class PlaySoundOnCollision : MonoBehaviour
 {
     private AudioSource sound;
-
+    
 	public string filename;
     // Use this for initialization
     void Start()
     {
         GetComponent<AudioSource>().playOnAwake = false;
-        sound = GetComponent<AudioSource>();
+        if(filename != "")
+        {
+            GetComponent<AudioSource>().clip = LoadResources.soundFiles[filename];
+        }
     }
 
     // Mettre un collider sur chacun des objets
@@ -21,8 +24,11 @@ public class PlaySoundOnCollision : MonoBehaviour
         
         if (test.gameObject.CompareTag("Pickable"))
         {
-            sound.PlayOneShot(LoadResources.soundFiles[filename]);
-            SteamVR_Controller.Input((int)controller.controllerIndex).TriggerHapticPulse((ushort)3999);
+            GetComponent<AudioSource>().PlayOneShot(LoadResources.soundFiles[filename]);
+            if (controller != null)
+            {
+                SteamVR_Controller.Input((int)controller.controllerIndex).TriggerHapticPulse((ushort)3999);
+            }
         }
     }
 }
