@@ -17,10 +17,21 @@ public class LoadResources : MonoBehaviour {
     };
 
 	// Use this for initialization
-	void Awake () {
+	void Start () {
         audioFiles = new Dictionary<string, AudioClip>();
-        
-        DirectoryInfo dir = new DirectoryInfo("Assets/Resources/Musics");
+        string directory;
+        DirectoryInfo dir;
+
+        #if UNITY_STANDALONE_WIN
+        Debug.Log("Build");
+        directory = "IsenBoxVR_Data/Assets/Resources/";
+        #endif
+        #if UNITY_EDITOR
+        Debug.Log("Editor");
+        directory = "Assets/Resources/";
+        #endif
+
+        dir = new DirectoryInfo(directory+"Musics/");
         List<FileInfo> info = new List<FileInfo>();
         foreach(string ext in extentions) {
             info.AddRange(dir.GetFiles(ext));
@@ -37,8 +48,7 @@ public class LoadResources : MonoBehaviour {
 
 
 		soundFiles = new Dictionary<string, AudioClip>();
-
-		dir = new DirectoryInfo("Assets/Resources/Sounds");
+		dir = new DirectoryInfo(directory+"Sounds");
 		info = new List<FileInfo>();
 		foreach(string ext in extentions) {
 			info.AddRange(dir.GetFiles(ext));
