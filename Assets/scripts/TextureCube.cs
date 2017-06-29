@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class TextureCube : MonoBehaviour {
 	void Start () {		
@@ -12,44 +10,51 @@ public class TextureCube : MonoBehaviour {
 			return;
 		}
 
+		float[,] colors = new float[,] {
+			#region Front
+			{  0.0f,0.5f},	// Bottom	Left
+			{0.333f,0.5f},	// Bottom	Right
+			{  0.0f,1.0f},	// Top		Left
+			{0.333f,1.0f},	// Top		Right
+			#endregion
+			#region Top
+			{0.334f,0.5f},	// Bottom	Left
+			{0.666f,0.5f},	// Bottom	Right
+			{0.334f,1.0f},	// Top		Left
+			{0.666f,1.0f},	// Top		Right
+			#endregion
+			#region Back
+			{0.667f,0.5f},	// Bottom	Left
+			{  1.0f,0.5f},	// Bottom	Right
+			{0.667f,1.0f},	// Top		Left
+			{  1.0f,1.0f},	// Top		Right
+			#endregion
+			#region Bottom
+			{0.334f,0.0f},	// Bottom	Left
+			{0.666f,0.0f},	// Bottom	Right
+			{0.334f,0.5f},	// Top		Left
+			{0.666f,0.5f},	// Top		Right
+			#endregion
+			#region Right
+			{  0.0f,0.0f},	// Bottom	Left
+			{0.333f,0.0f},	// Bottom	Right
+			{  0.0f,0.5f},	// Top		Left
+			{0.333f,0.5f},	// Top		Right
+			#endregion
+			#region Left
+			{0.667f,0.0f},	// Bottom	Left
+			{  1.0f,0.0f},	// Bottom	Right
+			{0.667f,0.5f},	// Top		Left
+			{  1.0f,0.5f}	// Top		Right
+			#endregion
+		};
+
 		Vector2[] uvs = new Vector2[mesh.vertices.Length];
 
-		#region Front
-		uvs[0]  = new Vector2(  0.0f,0.5f);	// Bottom	Left
-		uvs[1]  = new Vector2(0.333f,0.5f);	// Bottom	Right
-		uvs[2]  = new Vector2(  0.0f,1.0f);	// Top		Left
-		uvs[3]  = new Vector2(0.333f,1.0f);	// Top		Right
-		#endregion
-		#region Top
-		uvs[8]  = new Vector2(0.334f,0.5f);	// Bottom	Left
-		uvs[9]  = new Vector2(0.666f,0.5f);	// Bottom	Right
-		uvs[4]  = new Vector2(0.334f,1.0f);	// Top		Left
-		uvs[5]  = new Vector2(0.666f,1.0f);	// Top		Right
-		#endregion
-		#region Back
-		uvs[7]  = new Vector2(0.667f,0.5f);	// Bottom	Left
-		uvs[6]  = new Vector2(  1.0f,0.5f);	// Bottom	Right
-		uvs[11] = new Vector2(0.667f,1.0f);	// Top		Left
-		uvs[10] = new Vector2(  1.0f,1.0f);	// Top		Right
-		#endregion
-		#region Bottom
-		uvs[12] = new Vector2(0.334f,0.0f);	// Bottom	Left
-		uvs[15] = new Vector2(0.666f,0.0f);	// Bottom	Right
-		uvs[13] = new Vector2(0.334f,0.5f);	// Top		Left
-		uvs[14] = new Vector2(0.666f,0.5f);	// Top		Right
-		#endregion
-		#region Right
-		uvs[20] = new Vector2(  0.0f,0.0f);	// Bottom	Left
-		uvs[23] = new Vector2(0.333f,0.0f);	// Bottom	Right
-		uvs[21] = new Vector2(  0.0f,0.5f);	// Top		Left
-		uvs[22] = new Vector2(0.333f,0.5f);	// Top		Right
-		#endregion
-		#region Left
-		uvs[16] = new Vector2(0.667f,0.0f);	// Bottom	Left
-		uvs[19] = new Vector2(  1.0f,0.0f);	// Bottom	Right
-		uvs[17] = new Vector2(0.667f,0.5f);	// Top		Left
-		uvs[18] = new Vector2(  1.0f,0.5f);	// Top		Right
-		#endregion
+		for (int i = 0; i < mesh.vertices.Length; ++i) {
+			uvs [i] = new Vector2 (colors[i, 0] / 20.0f, colors[i, 1] / 4.0f);
+		}
+
 
 		mesh.uv = uvs;
 	}

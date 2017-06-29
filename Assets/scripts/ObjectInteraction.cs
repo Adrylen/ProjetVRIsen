@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectInteraction : MonoBehaviour
-{
+public class ObjectInteraction : MonoBehaviour {
 	private SteamVR_TrackedController controller;
 	private GameObject target = null;
     private bool isClicked = false;
@@ -13,8 +12,6 @@ public class ObjectInteraction : MonoBehaviour
 
     public int pulsation = 900;
 
-
-
     void OnEnable() {
 		controller = GetComponent<SteamVR_TrackedController>();
         standardShader = Shader.Find("Standard");
@@ -22,10 +19,9 @@ public class ObjectInteraction : MonoBehaviour
     }
 
 	void Update() {
-        if (controller.gripped)
-        {
-			if(controller.transform.childCount>1 && controller.transform.GetChild(1).GetComponent<DrumStick>() == null)
-            {
+		// Reset Sound Colored Ball
+        if (controller.gripped) {
+			if(controller.transform.childCount > 1 && controller.transform.GetChild(1).GetComponent<DrumStick>() == null) {
                 controller.GetComponent<ControllerCD>().Reset();
                 Destroy(controller.transform.GetChild(1).gameObject);
             }
@@ -58,8 +54,7 @@ public class ObjectInteraction : MonoBehaviour
 
         if (other.gameObject.CompareTag("Pickable") && target == null) {
             Renderer rend = other.GetComponent<Renderer>();
-            if (rend != null)
-            {
+            if (rend != null) {
                 rend.material.shader = outlinedShader;
             }
             SteamVR_Controller.Input((int)controller.controllerIndex).TriggerHapticPulse((ushort)pulsation);
@@ -75,17 +70,13 @@ public class ObjectInteraction : MonoBehaviour
         }
 	}
     
-    void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.CompareTag("Pickable") && target == other.gameObject)
-        {
+    void OnTriggerExit(Collider other) {
+        if (other.gameObject.CompareTag("Pickable") && target == other.gameObject) {
             Renderer rend = other.GetComponent<Renderer>();
-            if (rend != null)
-            {
+            if (rend != null) {
                 rend.material.shader = standardShader;
             }
-            if (target.GetComponent<Movable>() != null)
-            {
+            if (target.GetComponent<Movable>() != null) {
                 target.GetComponent<Movable>().leaveInput();
             }
             target = null;
@@ -101,8 +92,7 @@ public class ObjectInteraction : MonoBehaviour
         }
     }
 
-    public void Detach()
-    {
+    public void Detach() {
         target = null;
     }
 }

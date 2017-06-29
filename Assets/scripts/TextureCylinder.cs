@@ -1,10 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class TextureCylinder : MonoBehaviour {
-	private int i;
-
 	void Start () {
 		MeshFilter mf = GetComponent<MeshFilter> ();
 		Mesh mesh = mf != null ? mf.mesh : null;
@@ -15,7 +11,7 @@ public class TextureCylinder : MonoBehaviour {
 		}
 
 		float[,] colors = new float[,] {
-			// Side bottom points
+			#region BottomPoints
 			{ 0.0f, 1.0f },	//  0
 			{ 1.0f, 1.0f },	//  1
 			{ 2.0f, 1.0f },	//  2
@@ -36,8 +32,8 @@ public class TextureCylinder : MonoBehaviour {
 			{17.0f, 1.0f },	// 17
 			{18.0f, 1.0f },	// 18
 			{19.0f, 1.0f },	// 19
-
-			// Side top points
+			#endregion
+			#region TopPoints
 			{ 0.0f, 3.0f },	// 20
 			{ 1.0f, 3.0f },	// 21
 			{ 2.0f, 3.0f },	// 22
@@ -58,22 +54,20 @@ public class TextureCylinder : MonoBehaviour {
 			{17.0f, 3.0f },	// 37
 			{18.0f, 3.0f },	// 38
 			{19.0f, 3.0f },	// 39
-
-			// Center
+			#endregion
+			#region CenterPoints
 			{10.0f, 0.0f },	// 40	// Bottom
 			{10.0f, 4.0f },	// 41	// Top
-
-			// Missed first band 
+			#endregion
+			#region MissedBands
 			{ 9.0f, 1.0f },	// 42	// Bottom	theta = 0
 			{ 9.0f, 3.0f },	// 43	// Top 		theta = 0
-
-			// Missed second band
 			{19.0f, 1.0f },	// 44	// Bottom	theta = pi
 			{19.0f, 3.0f },	// 45	// Top 		theta = pi
 			{20.0f, 3.0f },	// 46	// Top		theta = -9pi/10
 			{20.0f, 1.0f },	// 47	// Bottom	theta = -9pi/10
-
-			// Bottom circle
+			#endregion
+			#region BottomCircle
 			{ 1.0f, 1.0f },	// 48
 			{ 0.0f, 1.0f },	// 49
 			{ 2.0f, 1.0f },	// 50
@@ -94,8 +88,8 @@ public class TextureCylinder : MonoBehaviour {
 			{17.0f, 1.0f },	// 65
 			{18.0f, 1.0f },	// 66
 			{19.0f, 1.0f },	// 67
-
-			// Top circle
+			#endregion
+			#region TopCircle
 			{ 0.0f, 3.0f },	// 68
 			{ 1.0f, 3.0f },	// 69
 			{ 2.0f, 3.0f },	// 70
@@ -116,6 +110,7 @@ public class TextureCylinder : MonoBehaviour {
 			{17.0f, 3.0f },	// 85
 			{18.0f, 3.0f },	// 86
 			{19.0f, 3.0f }	// 87
+			#endregion
 		};
 
 		Vector2[] uvs = new Vector2[mesh.vertices.Length];
